@@ -29,5 +29,8 @@
     "special-defense": "Special Defense",
     "speed": "Speed",
     "search":"search",
-    "flying":"flying"
+    "flying":"flying",
+    "abilities": "Abilities",
+    "hiddenAbility": "Hidden Ability",
+    "regularAbility": "Regular Ability"
 }

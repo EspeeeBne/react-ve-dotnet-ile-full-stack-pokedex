@@ -51,11 +51,7 @@ const PokemonDetail = () => {
   }
 
   const translatedTypes = pokemon.types.map((type) => t(type));
-
-
   const pokemonTypeColor = typeColors[pokemon.types[0]] || '#FFF';
-
-
   const isDarkTheme = document.body.classList.contains('dark-theme');
   const boxStyle = isDarkTheme ? { backgroundColor: '#333', color: '#fff' } : { backgroundColor: '#fff', color: '#000' };
 
@@ -108,6 +104,7 @@ const PokemonDetail = () => {
               {`${t('weight')}: ${pokemon.weight} kg`}
             </Typography>
 
+            {/* İstatistikler */}
             <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
               {pokemon.stats ? t('stats') : t('noStats')}
             </Typography>
@@ -129,13 +126,39 @@ const PokemonDetail = () => {
                         <Typography variant="body2" style={{ fontWeight: 'bold' }}>
                           {t(statName)}:
                         </Typography>
-                        <Typography variant="body2" style={{ color: '#555' }}>
-                          {statValue}
-                        </Typography>
+                        <Typography variant="body2">{statValue}</Typography>
                       </Card>
                     </Grid>
                   );
                 })}
+            </Grid>
+
+            {/* Yetenekler */}
+            <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
+              {t('abilities')}
+            </Typography>
+            <Grid container spacing={2} style={{ marginTop: '10px' }}>
+              {pokemon.abilities &&
+                pokemon.abilities.map((ability, index) => (
+                  <Grid item xs={12} sm={6} key={index}>
+                    <Card
+                      style={{
+                        padding: '10px',
+                        backgroundColor: boxStyle.backgroundColor,
+                        color: boxStyle.color,
+                        borderRadius: '10px',
+                        boxShadow: '0px 2px 10px rgba(0,0,0,0.1)',
+                      }}
+                    >
+                      <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+                        {t(ability.name)}
+                      </Typography>
+                      <Typography variant="body2" style={{ color: '#555' }}>
+                        {ability.isHidden ? t('hiddenAbility') : t('regularAbility')}
+                      </Typography>
+                    </Card>
+                  </Grid>
+                ))}
             </Grid>
           </Box>
         </CardContent>

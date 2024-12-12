@@ -29,5 +29,8 @@
     "special-defense": "Özel Savunma",
     "speed": "Hız",
     "search":"Ara",
-    "flying":"Kanatlı"
+    "flying":"Kanatlı",
+    "abilities": "Yetenekler",
+    "hiddenAbility": "Gizli Yetenek",
+    "regularAbility": "Normal Yetenek"
 }

@@ -33,6 +33,15 @@ public class PokeApiService
             })
             .ToList();
 
+        var abilities = data["abilities"]
+            .Select(a => new PokemonAbility
+            {
+                Name = a["ability"]["name"].ToString(),
+                Url = a["ability"]["url"].ToString(),
+                IsHidden = (bool)a["is_hidden"]
+            })
+            .ToList();
+
         return new PokemonDetail
         {
             Id = (int)data["id"],
@@ -41,7 +50,8 @@ public class PokeApiService
             ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png",
             Height = (double)data["height"] / 10,
             Weight = (double)data["weight"] / 10,
-            Stats = stats.Select(stat => $"{stat.statName}: {stat.baseStat}").ToList()
+            Stats = stats.Select(stat => $"{stat.statName}: {stat.baseStat}").ToList(),
+            Abilities = abilities
         };
     }
 
@@ -70,7 +80,7 @@ public class PokeApiService
 
     public async Task<List<PokemonDetail>> GetAllPokemonDetailsAsync()
     {
-        var response = await _httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon?limit=100"); //bu limit'in yanýndaki sayýyý çok yüksek girmeyin kullanmayý düþünüyorsanýz bu kodu girerseniz ek kod yazmalýsýnýz ya da bir db'de pokemonlarý kendiniz kaydetmelisiniz 5-6 saat sürüyor 10000 diye ayarlayýnca
+        var response = await _httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon?limit=100");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
         var pokemonList = JObject.Parse(json)["results"];
@@ -87,6 +97,15 @@ public class PokeApiService
                 .Select(t => t["type"]["name"].ToString())
                 .ToList();
 
+            var abilities = data["abilities"]
+                .Select(a => new PokemonAbility
+                {
+                    Name = a["ability"]["name"].ToString(),
+                    Url = a["ability"]["url"].ToString(),
+                    IsHidden = (bool)a["is_hidden"]
+                })
+                .ToList();
+
             return new PokemonDetail
             {
                 Id = (int)data["id"],
@@ -94,7 +113,8 @@ public class PokeApiService
                 Types = types,
                 ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{(int)data["id"]}.png",
                 Height = (double)data["height"] / 10,
-                Weight = (double)data["weight"] / 10
+                Weight = (double)data["weight"] / 10,
+                Abilities = abilities
             };
         });
 
