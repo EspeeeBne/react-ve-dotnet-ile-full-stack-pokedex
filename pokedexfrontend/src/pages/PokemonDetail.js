@@ -104,7 +104,6 @@ const PokemonDetail = () => {
               {`${t('weight')}: ${pokemon.weight} kg`}
             </Typography>
 
-            {/* İstatistikler */}
             <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
               {pokemon.stats ? t('stats') : t('noStats')}
             </Typography>
@@ -133,7 +132,6 @@ const PokemonDetail = () => {
                 })}
             </Grid>
 
-            {/* Yetenekler */}
             <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
               {t('abilities')}
             </Typography>
