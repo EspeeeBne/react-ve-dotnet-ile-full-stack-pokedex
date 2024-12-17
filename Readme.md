@@ -73,14 +73,18 @@ npm start
 
 React Uygulaması şu URL'den çalışacaktır (muhtemelen): http://localhost:3000
 
-🎮 Kullanım
-Uygulama Açıldıktan Sonra:
+---
+
+## 🎮 Kullanım
+## Uygulama Açıldıktan Sonra:
 Uygulama açıldığında, ana sayfada Pokémon'lar listelenir. Pokémon'a tıklayarak detaylarına ulaşabilirsiniz (internet hızınıza göre yavaş yüklenebilir pokeapi'den alıyor yerel bir yerden almıyor).
 Pokémon arama kutusunu kullanarak Pokémon ismi veya ID'si ile arama yapabilirsiniz.
 Tema geçişi yapmak için, sağ üstteki tema değişim butonuna tıklayarak karanlık ve aydınlık temalar arasında geçiş yapabilirsiniz.
 Dil seçeneğini değiştirmek için, sağ üstteki bayrak ikonlarından birine tıklayarak dil değiştirebilirsiniz.
 
-⚙️ API Uç Noktaları
+---
+
+## ⚙️ API Uç Noktaları
 
 
 1. Tüm Pokémon'ların Bilgileri
@@ -100,8 +104,9 @@ Pokémon ismi ile arama yaparak ilgili Pokémon'u döner.
 GET /api/pokemon/evolution/{id}
 Açıklama: Pokémon'un evrim zincirini döner.
 
+---
 
-🏆 Öne Çıkan Özellikler
+## 🏆 Öne Çıkan Özellikler
 Zengin Görsel İçerik: Pokémon'ların resimleri ve detayları özenle yerleştirildi.
 Karmaşık Bilgiler: Pokémon türlerine ve istatistiklerine göre detaylı görseller ve bilgi sunuyor.
 Kapsamlı API: API'den gelen veriler ile her Pokémon için tüm bilgileri dinamik olarak alıyoruz.
@@ -110,11 +115,14 @@ Dinamik Evrim Zinciri: Pokémon'un evrim zincirinde bulunan Pokémon'lar kutular
 Görsel Uyum: Pokémon türlerine göre değişen arka plan ve stil renkleri.
 Kullanıcı Dostu: Basit, şık ve dinamik arayüz ile kolay gezinme.
 
+---
 
-📄 Lisans
+## 📄 Lisans
 Bu proje, MIT Lisansı altında lisanslanmıştır.
 
-🎨 Görseller
+---
+
+## 🎨 Görseller
 Proje tasarımında kullanılan görseller, PokeAPI ve Pokémon SVG tarafından sağlanmıştır.
 
 "Pokémon" tüm haklarıyla Pokémon Company ve Game Freak'in mülküdür. Bu proje tamamen eğitim ve kendini geliştirme amaçlıdır sizde lütfen kullanırsanız ona göre kullanın.
