@@ -4,57 +4,95 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using PokedexBackend.Services;
+using PokedexBackend.Models;
 
-[ApiController]
-[Route("api/[controller]")]
-public class PokemonController : ControllerBase
+namespace PokedexBackend.Controllers
 {
-    private readonly PokeApiService _pokeApiService;
-
-    public PokemonController(PokeApiService pokeApiService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PokemonController : ControllerBase
     {
-        _pokeApiService = pokeApiService;
-    }
+        private readonly PokeApiService _pokeApiService;
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPokemon(int id)
-    {
-        try
+        public PokemonController(PokeApiService pokeApiService)
         {
-            var pokemon = await _pokeApiService.GetPokemonAsync(id);
+            _pokeApiService = pokeApiService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPokemon(int id)
+        {
+            try
+            {
+                var pokemon = await _pokeApiService.GetPokemonAsync(id);
+                return Ok(pokemon);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("search/{name}")]
+        public async Task<IActionResult> SearchPokemonByName(string name)
+        {
+            var pokemon = await _pokeApiService.SearchPokemonByNameAsync(name);
+            if (pokemon == null || !pokemon.Any())
+            {
+                return NotFound("Pokemon not found");
+            }
             return Ok(pokemon);
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Hata: {ex.Message}");
-        }
-    }
 
-    [HttpGet("search/{name}")]
-    public async Task<IActionResult> SearchPokemonByName(string name)
-    {
-        var pokemon = await _pokeApiService.SearchPokemonByNameAsync(name);
-        if (pokemon == null || !pokemon.Any())
+        [HttpGet("all/details")]
+        public async Task<IActionResult> GetAllPokemonDetails()
         {
-            return NotFound("Pokemon not found");
+            try
+            {
+                var allPokemonDetails = await _pokeApiService.GetAllPokemonDetailsAsync();
+                return Ok(allPokemonDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
-        return Ok(pokemon);
-    }
 
-
-    [HttpGet("all/details")]
-    public async Task<IActionResult> GetAllPokemonDetails()
-    {
-        try
+        [HttpGet("ability/{abilityId}")]
+        public async Task<IActionResult> GetAbilityDetails(int abilityId)
         {
-            var allPokemonDetails = await _pokeApiService.GetAllPokemonDetailsAsync();
-            return Ok(allPokemonDetails);
+            try
+            {
+                var abilityDetails = await _pokeApiService.GetAbilityDetailsAsync(abilityId);
+                if (abilityDetails == null)
+                {
+                    return NotFound("Ability not found");
+                }
+                return Ok(abilityDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
-        catch (Exception ex)
+
+        [HttpGet("evolution/{id}")]
+        public async Task<IActionResult> GetEvolutionChain(int id)
         {
-            return StatusCode(500, $"Hata: {ex.Message}");
+            try
+            {
+                var evolutionChain = await _pokeApiService.GetEvolutionChainAsync(id);
+                if (evolutionChain == null || !evolutionChain.Any())
+                {
+                    return NotFound("No evolution data available");
+                }
+                return Ok(evolutionChain);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
         }
     }
 }
-
-

@@ -28,9 +28,19 @@
     "special-attack": "Özel Saldırı",
     "special-defense": "Özel Savunma",
     "speed": "Hız",
-    "search":"Ara",
-    "flying":"Kanatlı",
+    "search": "Ara",
+    "flying": "Kanatlı",
     "abilities": "Yetenekler",
     "hiddenAbility": "Gizli Yetenek",
-    "regularAbility": "Normal Yetenek"
+    "regularAbility": "Normal Yetenek",
+    "abilityName": "Yetenek Adı",
+    "abilityEffect": "Yetenek Etkisi",
+    "pokemonWithAbility": "Bu Yeteneğe Sahip Pokemon'lar",
+    "errorLoading": "Yetenek detayları yüklenirken hata oluştu. Lütfen tekrar deneyin.",
+    "evolutionChain": "Evrim Zinciri",
+    "noEvolution": "Evrim Zinciri Yok",
+    "fetchError": "Bilgiler alınırken bir hata oluştu. Lütfen tekrar deneyin.",
+    "viewDetails":"Pokemon'a Bak",
+    "finalEvolution":"Son Evrimde",
+    "createdBy": "EspeeeBne tarafından kodlandı"
 }

@@ -1,4 +1,7 @@
+using PokedexBackend.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<PokeApiService>();
@@ -27,4 +30,5 @@ app.UseHttpsRedirection();
 app.UseCors("AllowEverything");
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
