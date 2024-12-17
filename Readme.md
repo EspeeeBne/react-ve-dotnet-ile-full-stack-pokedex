@@ -8,12 +8,13 @@
 
 - **Pokémon Arama**: Pokémon ismi veya ID'si ile arama yaparak, her Pokémon'un detaylarına ulaşabilirsiniz.
 - **Pokémon Detay Sayfası**: Pokémon'un türleri, boyu, ağırlığı, istatistikleri ve daha fazlası hakkında detaylı bilgi görüntülenebilir.
+- **Evrim Zinciri**: Pokémon'un evrim zincirini görüp tıklayarak diğer evrimlere geçiş yapabilirsiniz.
 - **Tema Desteği**: Kullanıcıların tercihlerine göre **karanlık** ve **aydınlık** tema seçenekleri.
 - **Dil Desteği**: Proje, **Türkçe** ve **İngilizce** dillerini desteklemektedir.
 - **Backend (API)**: **.NET 9.0** kullanarak geliştirilmiş bir **RESTful API** üzerinden Pokémon verilerini çekiyoruz.
 - **Dinamik Arka Plan ve Yazı Renkleri**: Pokémon türlerine göre arka plan renkleri dinamik olarak değişir.
 - **Pokémon İstatistikleri**: HP, saldırı, savunma gibi Pokémon'un temel istatistiklerini şık bir şekilde görüntüleyebilirsiniz.
-
+- **pokémon Skilleri**: Pokémon'un kullanabildiği skill'ler ve bu skill'lere tıklayarak detaylı anlatımıyla bu skill'i kullanan başka pokémonlara bakabilme.
 ---
 
 ## 🔧 Teknolojiler
@@ -63,8 +64,7 @@ Front-end klasörüne gidin
 Gerekli bağımlılıkları yükleyin:
 
 
-npm install --legacy-peer-deps
-(paketlerin bazıları react 19 almış bazıları almamış güncel paketler tek tek ellemedim diye hata verir düz npm install yazarsanız)
+npm install
 
 
 Front-end'i başlatın:
@@ -96,12 +96,19 @@ GET /api/pokemon/search/{name}
 Pokémon ismi ile arama yaparak ilgili Pokémon'u döner.
 
 
+1. Evrim Zinciri
+GET /api/pokemon/evolution/{id}
+Açıklama: Pokémon'un evrim zincirini döner.
+
+
 🏆 Öne Çıkan Özellikler
 Zengin Görsel İçerik: Pokémon'ların resimleri ve detayları özenle yerleştirildi.
 Karmaşık Bilgiler: Pokémon türlerine ve istatistiklerine göre detaylı görseller ve bilgi sunuyor.
 Kapsamlı API: API'den gelen veriler ile her Pokémon için tüm bilgileri dinamik olarak alıyoruz.
 Kolay Kullanım: Basit ve anlaşılır arayüz, kullanıcı dostu özelliklerle kullanıcıların kolayca gezinebileceği şekilde tasarlandı.
-
+Dinamik Evrim Zinciri: Pokémon'un evrim zincirinde bulunan Pokémon'lar kutular içinde görüntülenir ve tıklanabilir.
+Görsel Uyum: Pokémon türlerine göre değişen arka plan ve stil renkleri.
+Kullanıcı Dostu: Basit, şık ve dinamik arayüz ile kolay gezinme.
 
 
 📄 Lisans
