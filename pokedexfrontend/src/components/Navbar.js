@@ -1,10 +1,39 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppBar, Toolbar, IconButton, Typography, Box, InputBase, Paper } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  InputBase,
+  Paper,
+  Card,
+  CardContent,
+} from '@mui/material';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
+const typeColors = {
+  grass: '#78C850',
+  fire: '#F08030',
+  water: '#6890F0',
+  poison: '#A040A0',
+  electric: '#F8D030',
+  bug: '#A8B820',
+  normal: '#A8A878',
+  fairy: '#EE99AC',
+  ground: '#E0C068',
+  fighting: '#C03028',
+  psychic: '#F85888',
+  rock: '#B8A038',
+  ghost: '#705898',
+  steel: '#B8B8D0',
+  dragon: '#7038F8',
+  dark: '#705848',
+};
 
 const Navbar = ({ toggleTheme, darkMode }) => {
   const { t, i18n } = useTranslation();
@@ -20,7 +49,7 @@ const Navbar = ({ toggleTheme, darkMode }) => {
       const response = await axios.get(`http://localhost:5145/api/pokemon/search/${searchQuery}`);
       setSearchResults(response.data);
     } catch (error) {
-      console.error('Error searching Pokemon:', error);
+      console.error('Error searching Pokémon:', error);
     }
   };
 
@@ -33,7 +62,6 @@ const Navbar = ({ toggleTheme, darkMode }) => {
           </Typography>
         </Link>
 
-
         <Box display="flex" alignItems="center" style={{ position: 'relative' }}>
           <InputBase
             placeholder={t('search')}
@@ -41,10 +69,11 @@ const Navbar = ({ toggleTheme, darkMode }) => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             style={{
-              backgroundColor: '#7038F8',
+              backgroundColor: darkMode ? '#555' : '#ddd',
               padding: '5px 10px',
-              borderRadius: '5px',
+              borderRadius: '10px',
               marginRight: '20px',
+              color: darkMode ? 'white' : 'black',
             }}
           />
           <IconButton onClick={handleSearch} color="inherit">
@@ -52,26 +81,58 @@ const Navbar = ({ toggleTheme, darkMode }) => {
           </IconButton>
 
           {searchQuery && searchResults.length > 0 && (
-            <Paper style={{ position: 'absolute', top: '35px', width: '200px', zIndex: 1000 }}>
+            <Paper
+              style={{
+                position: 'absolute',
+                top: '40px',
+                left: 0,
+                width: '300px',
+                maxHeight: '400px',
+                overflowY: 'auto',
+                zIndex: 1000,
+                borderRadius: '10px',
+              }}
+            >
               <Box>
                 {searchResults.map((result) => (
                   <Link
                     key={result.id}
                     to={`/pokemon/${result.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
                   >
-                    <Box
+                    <Card
                       style={{
-                        padding: '10px',
-                        borderBottom: '1px solid #ccc',
-                        backgroundColor: 'lightgray',
-                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        margin: '5px',
+                        backgroundColor: typeColors[result.types?.[0]] || '#fff',
+                        color: darkMode ? 'white' : 'black',
                       }}
                     >
-                      <Typography variant="body2" style={{ textTransform: 'capitalize' }}>
-                        {result.name}
-                      </Typography>
-                    </Box>
+                      <img
+                        src={result.imageUrl}
+                        alt={result.name}
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          margin: '5px',
+                          borderRadius: '50%',
+                          backgroundColor: '#f3f3f3',
+                        }}
+                      />
+                      <CardContent style={{ flex: '1 1 auto' }}>
+                        <Typography
+                          variant="body1"
+                          style={{
+                            fontWeight: 'bold',
+                            textTransform: 'capitalize',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {result.name}
+                        </Typography>
+                      </CardContent>
+                    </Card>
                   </Link>
                 ))}
               </Box>

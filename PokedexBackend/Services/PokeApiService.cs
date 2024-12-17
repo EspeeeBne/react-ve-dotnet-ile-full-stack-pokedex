@@ -168,28 +168,33 @@ namespace PokedexBackend.Services
         {
             var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/ability/{abilityId}");
             response.EnsureSuccessStatusCode();
-
             var json = await response.Content.ReadAsStringAsync();
             var data = JObject.Parse(json);
 
-            var effect = data["effect_entries"]
-                            .FirstOrDefault(e => e["language"]["name"].ToString() == "en")?["effect"]
-                            ?.ToString();
-
-            return new AbilityDetail
+            var abilityDetail = new AbilityDetail
             {
                 Name = data["name"].ToString(),
-                Effect = effect ?? "No effect available",
-                Pokemon = data["pokemon"]
-                            .Select(p => new PokemonBasic
-                            {
-                                Id = int.Parse(p["pokemon"]["url"].ToString().Split('/')[6]),
-                                Name = p["pokemon"]["name"].ToString()
-                            })
-                            .ToList()
+                Effect = data["effect_entries"]
+                    .FirstOrDefault(e => e["language"]["name"].ToString() == "en")?["effect"].ToString(),
+                Pokemon = data["pokemon"].Select(p => new PokemonBasic
+                {
+                    Id = int.Parse(p["pokemon"]["url"].ToString().Split('/')[^2]),
+                    Name = p["pokemon"]["name"].ToString(),
+                    Type = GetPokemonTypeAsync(int.Parse(p["pokemon"]["url"].ToString().Split('/')[^2])).Result
+                }).ToList()
             };
+
+            return abilityDetail;
         }
 
+        private async Task<string> GetPokemonTypeAsync(int pokemonId)
+        {
+            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/{pokemonId}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(json);
 
+            return data["types"][0]["type"]["name"].ToString();
+        }
     }
 }

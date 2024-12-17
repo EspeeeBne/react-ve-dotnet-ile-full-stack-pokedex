@@ -82,7 +82,6 @@ const PokemonDetail = () => {
         }}
       >
         <CardContent>
-          {/* Pokemon Resim ve Bilgiler */}
           <Box display="flex" flexDirection="column" alignItems="center">
             <img
               src={pokemon.imageUrl}
@@ -108,7 +107,6 @@ const PokemonDetail = () => {
             </Typography>
           </Box>
 
-          {/* İstatistikler */}
           <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
             {t('stats')}
           </Typography>
@@ -136,7 +134,6 @@ const PokemonDetail = () => {
             })}
           </Grid>
 
-          {/* Yetenekler */}
           <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
             {t('abilities')}
           </Typography>
@@ -160,7 +157,6 @@ const PokemonDetail = () => {
             ))}
           </Grid>
 
-          {/* Evrim Zinciri */}
           <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
             {t('evolutionChain')}
           </Typography>
@@ -217,7 +213,7 @@ const PokemonDetail = () => {
                     </Typography>
                   </Box>
                   {index < evolutionChain.length - 1 && (
-                    <Typography style={{ fontSize: '30px', color: '#fff' }}>→</Typography>
+                    <Typography style={{ fontSize: '30px', color: '#rgba(0,0,0,0)' }}>→</Typography>
                   )}
                 </React.Fragment>
               ))
