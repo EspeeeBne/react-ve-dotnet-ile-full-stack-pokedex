@@ -42,5 +42,12 @@
     "fetchError": "Bilgiler alınırken bir hata oluştu. Lütfen tekrar deneyin.",
     "viewDetails":"Pokemon'a Bak",
     "finalEvolution":"Son Evrimde",
-    "createdBy": "EspeeeBne tarafından kodlandı"
+    "createdBy": "EspeeeBne tarafından kodlandı",
+    "filterByType": "Türe Göre Filtrele",
+    "all": "Tümü",
+    "goToWiki": "Wiki'ye Git",
+    "comparePokemon":"Pokémon'ları karşılaştır",
+    "compare":"Karşılaştır",
+    "selectSecondPokemon":"İkinci Pokémonu seç",
+    "selectFirstPokemon":"İlk Pokémonu seç"
 }

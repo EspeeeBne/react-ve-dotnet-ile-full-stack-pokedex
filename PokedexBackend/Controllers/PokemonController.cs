@@ -94,5 +94,19 @@ namespace PokedexBackend.Controllers
                 return StatusCode(500, $"Error: {ex.Message}");
             }
         }
+
+        [HttpGet("filter/type/{type}")]
+        public async Task<IActionResult> GetPokemonByType(string type)
+        {
+            try
+            {
+                var pokemonByType = await _pokeApiService.GetPokemonByTypeAsync(type);
+                return Ok(pokemonByType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
     }
 }

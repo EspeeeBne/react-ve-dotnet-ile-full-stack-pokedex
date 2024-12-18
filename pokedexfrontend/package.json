@@ -1,6 +1,7 @@
 {
   "name": "pokedexfront",
-  "version": "1.0.0",
+  "version": "2.2.0",
+  "Creator":"EspeeeBne",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",

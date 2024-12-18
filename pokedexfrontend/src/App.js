@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import PokemonDetail from './pages/PokemonDetail';
 import AbilityDetail from './pages/AbilityDetail';
+import ComparePokemon from './pages/ComparePokemon';
 import './i18n';
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/pokemon/:id" element={<PokemonDetail />} />
           <Route path="/ability/:id" element={<AbilityDetail />} />
+          <Route path="/compare/:id1/:id2" element={<ComparePokemon />} />
         </Routes>
         <div
           style={{

@@ -42,5 +42,12 @@
     "fetchError": "An error occurred while fetching the data. Please try again.",
     "viewDetails":"View Pokemon",
     "finalEvolution":"The Pokemon is in the final evolution",
-    "createdBy": "Creted By EspeeeBne"
+    "createdBy": "Creted By EspeeeBne",
+    "filterByType": "Filter By Type",
+    "all": "All",
+    "goToWiki": "Go to Wiki",
+    "comparePokemon":"Compare Pokémons",
+    "compare":"Compare",
+    "selectSecondPokemon":"Select Second Pokémon",
+    "selectFirstPokemon":"Select First Pokémon"
 }

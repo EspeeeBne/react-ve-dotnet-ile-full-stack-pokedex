@@ -187,6 +187,42 @@ namespace PokedexBackend.Services
             return abilityDetail;
         }
 
+        public async Task<List<PokemonDetail>> GetPokemonByTypeAsync(string type)
+        {
+            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/type/{type}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(json);
+
+            var pokemonUrls = data["pokemon"]
+                .Select(p => p["pokemon"]["url"].ToString())
+                .ToList();
+
+            var tasks = pokemonUrls.Select(async url =>
+            {
+                var detailResponse = await _httpClient.GetAsync(url);
+                detailResponse.EnsureSuccessStatusCode();
+                var detailJson = await detailResponse.Content.ReadAsStringAsync();
+                var pokemonData = JObject.Parse(detailJson);
+
+                var types = pokemonData["types"]
+                    .Select(t => t["type"]["name"].ToString())
+                    .ToList();
+
+                return new PokemonDetail
+                {
+                    Id = (int)pokemonData["id"],
+                    Name = (string)pokemonData["name"],
+                    Types = types,
+                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{(int)pokemonData["id"]}.png",
+                    Height = (double)pokemonData["height"] / 10,
+                    Weight = (double)pokemonData["weight"] / 10
+                };
+            });
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+
         private async Task<string> GetPokemonTypeAsync(int pokemonId)
         {
             var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/{pokemonId}");

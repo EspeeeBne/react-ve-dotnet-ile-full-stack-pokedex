@@ -24,37 +24,32 @@ const typeColors = {
   dark: '#705848',
 };
 
-const PokemonDetail = () => {
-  const { id } = useParams();
+const PokemonCompare = () => {
+  const { id1, id2 } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [pokemon, setPokemon] = useState(null);
-  const [evolutionChain, setEvolutionChain] = useState([]);
+  const [pokemon1, setPokemon1] = useState(null);
+  const [pokemon2, setPokemon2] = useState(null);
+  const [evolution1, setEvolution1] = useState([]);
+  const [evolution2, setEvolution2] = useState([]);
 
   useEffect(() => {
-    const fetchPokemon = async () => {
+    const fetchData = async (id, setPokemon, setEvolution) => {
       try {
         const response = await axios.get(`http://localhost:5145/api/pokemon/${id}`);
         setPokemon(response.data);
+        const evoResponse = await axios.get(`http://localhost:5145/api/pokemon/evolution/${id}`);
+        setEvolution(evoResponse.data);
       } catch (error) {
-        console.error('Error fetching Pokemon details:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    const fetchEvolutionChain = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5145/api/pokemon/evolution/${id}`);
-        setEvolutionChain(response.data);
-      } catch (error) {
-        console.error('Error fetching evolution chain:', error);
-      }
-    };
+    fetchData(id1, setPokemon1, setEvolution1);
+    fetchData(id2, setPokemon2, setEvolution2);
+  }, [id1, id2]);
 
-    fetchPokemon();
-    fetchEvolutionChain();
-  }, [id]);
-
-  if (!pokemon) {
+  if (!pokemon1 || !pokemon2) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
         <CircularProgress />
@@ -62,23 +57,56 @@ const PokemonDetail = () => {
     );
   }
 
-  const translatedTypes = pokemon.types.map((type) => t(type));
-  const pokemonTypeColor = typeColors[pokemon.types[0]] || '#FFF';
-  const isDarkTheme = document.body.classList.contains('dark-theme');
-  const wikiUrl = `https://pokemon.fandom.com/wiki/${pokemon.name}`;
-  const boxStyle = isDarkTheme
-    ? { backgroundColor: '#333', color: '#fff' }
-    : { backgroundColor: '#fff', color: '#000' };
+  const renderEvolutionChain = (chain) => {
+    return (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            backgroundColor: '#fff',
+            borderRadius: '10px',
+            padding: '10px',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+          }}
+        >
+          {chain.map((step, index) => (
+            <React.Fragment key={index}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ cursor: 'pointer' }}
+                onClick={() => navigate(`/pokemon/${step.id}`)}
+              >
+                <img src={step.imageUrl} alt={step.name} style={{ width: '60px', marginBottom: '5px' }} />
+                <Typography style={{ textTransform: 'capitalize', fontWeight: 'bold', color: '#333' }}>
+                  {step.name}
+                </Typography>
+              </Box>
+              {index < chain.length - 1 && (
+                <Typography style={{ fontSize: '30px', margin: '0 10px' }}>➞</Typography>
+              )}
+            </React.Fragment>
+          ))}
+        </Box>
+      );
+    };
 
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+  const renderPokemonCard = (pokemon, evolutionChain) => {
+    const translatedTypes = pokemon.types.map((type) => t(type));
+    const wikiUrl = `https://pokemon.fandom.com/wiki/${pokemon.name}`;
+    const boxStyle = { backgroundColor: '#fff', color: '#000' };
+
+    return (
       <Card
         style={{
-          maxWidth: 800,
-          margin: '40px auto',
+          flex: 1,
+          margin: '20px',
           padding: '20px',
-          backgroundColor: pokemonTypeColor,
           borderRadius: '15px',
+          backgroundColor: typeColors[pokemon.types[0]] || '#FFF',
           boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
         }}
       >
@@ -88,26 +116,18 @@ const PokemonDetail = () => {
               src={pokemon.imageUrl}
               alt={pokemon.name}
               style={{
-                width: '250px',
+                width: '200px',
                 marginBottom: '20px',
-                borderRadius: '20px',
-                boxShadow: '0px 4px 15px rgba(0,0,0,0.3)',
+                borderRadius: '15px',
+                boxShadow: '0px 4px 10px rgba(0,0,0,0.3)',
               }}
             />
-            <Typography variant="h4" style={{ textTransform: 'capitalize', fontWeight: 'bold', color: '#fff' }}>
+            <Typography variant="h4" style={{ fontWeight: 'bold', color: '#fff' }}>
               #{pokemon.id} {pokemon.name}
             </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('type')}: ${translatedTypes.join(', ')}`}
-            </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('height')}: ${pokemon.height} m`}
-            </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('weight')}: ${pokemon.weight} kg`}
-            </Typography>
-          </Box>
-
+            <Typography style={{ color: '#fff' }}>{`${t('type')}: ${translatedTypes.join(', ')}`}</Typography>
+            <Typography style={{ color: '#fff' }}>{`${t('height')}: ${pokemon.height} m`}</Typography>
+            <Typography style={{ color: '#fff' }}>{`${t('weight')}: ${pokemon.weight} kg`}</Typography>
           <Box display="flex" justifyContent="center" marginTop="20px">
             <Button
               variant="contained"
@@ -125,7 +145,7 @@ const PokemonDetail = () => {
               {t('goToWiki')}
             </Button>
           </Box>
-
+          </Box>
           <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
             {t('stats')}
           </Typography>
@@ -252,8 +272,17 @@ const PokemonDetail = () => {
           </Box>
         </CardContent>
       </Card>
+    );
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+      <Box display="flex" justifyContent="center" margin="20px">
+        {renderPokemonCard(pokemon1, evolution1)}
+        {renderPokemonCard(pokemon2, evolution2)}
+      </Box>
     </motion.div>
   );
 };
 
-export default PokemonDetail;
+export default PokemonCompare;
