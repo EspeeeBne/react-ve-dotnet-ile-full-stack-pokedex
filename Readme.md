@@ -14,7 +14,9 @@
 - **Backend (API)**: **.NET 9.0** kullanarak geliştirilmiş bir **RESTful API** üzerinden Pokémon verilerini çekiyoruz.
 - **Dinamik Arka Plan ve Yazı Renkleri**: Pokémon türlerine göre arka plan renkleri dinamik olarak değişir.
 - **Pokémon İstatistikleri**: HP, saldırı, savunma gibi Pokémon'un temel istatistiklerini şık bir şekilde görüntüleyebilirsiniz.
-- **pokémon Skilleri**: Pokémon'un kullanabildiği skill'ler ve bu skill'lere tıklayarak detaylı anlatımıyla bu skill'i kullanan başka pokémonlara bakabilme.
+- **Pokémon Skilleri**: Pokémon'un kullanabildiği skill'ler ve bu skill'lere tıklayarak detaylı anlatımıyla bu skill'i kullanan başka pokémonlara bakabilme.
+- **Pokémon Karşılaştırma**: Pokémon'ları karşılaştırmaya yarayan bir özellik detaylarına bakıp karşılaştırma yapmanıza yarar.
+- **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik ateş türündeki pokémon mu yoksa elektrik mi seçip hepsini görebilme.
 ---
 
 ## 🔧 Teknolojiler
@@ -104,6 +106,10 @@ Pokémon ismi ile arama yaparak ilgili Pokémon'u döner.
 GET /api/pokemon/evolution/{id}
 Açıklama: Pokémon'un evrim zincirini döner.
 
+1. Pokémon Skillerini Görme
+GET /api/pokemon/ability/{abilityId}
+Açıklama: Pokémon'ların Skillerini görüp veriyi çekipo skill'e özel sayfa için kullanılan bir çağrı.
+
 ---
 
 ## 🏆 Öne Çıkan Özellikler
@@ -114,6 +120,9 @@ Kolay Kullanım: Basit ve anlaşılır arayüz, kullanıcı dostu özelliklerle 
 Dinamik Evrim Zinciri: Pokémon'un evrim zincirinde bulunan Pokémon'lar kutular içinde görüntülenir ve tıklanabilir.
 Görsel Uyum: Pokémon türlerine göre değişen arka plan ve stil renkleri.
 Kullanıcı Dostu: Basit, şık ve dinamik arayüz ile kolay gezinme.
+Türe Göre arama: Pokémon'ların türlerine göre filtreleme ile o türde hangi Pokémon var öğrenme.
+Skill sayfası ve Skill'ler: Skill'lere basıp Skill'in açıklamasını ve Skill'in hangi Pokémon'larda olduğunu görebilme ve olan Pokémon da görme.
+Pokémon Evrim Ağacı: Pokémon'ların neye evrimleşebildiğini görebilme.
 
 ---
 
