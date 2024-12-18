@@ -66,7 +66,8 @@ Front-end klasörüne gidin
 Gerekli bağımlılıkları yükleyin:
 
 
-npm install
+ -npm install --legacy-peer-deps
+ -(paketlerin bazıları react 19 almış b azıları almamış güncel paketler tek te k ellemedim diye hata verir düz npm in stall yazarsanız)
 
 
 Front-end'i başlatın:
