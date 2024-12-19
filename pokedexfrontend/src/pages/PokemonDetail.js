@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Typography, Card, CardContent, Box, Grid, CircularProgress, Button } from '@mui/material';
+import { Typography, Card, CardContent, Box, Grid, CircularProgress, Button, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import PokemonStatChart from '../components/PokemonStatChart';
 
 const typeColors = {
   grass: '#78C850',
@@ -25,6 +26,7 @@ const typeColors = {
 };
 
 const PokemonDetail = () => {
+  const theme = useTheme();
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -63,50 +65,56 @@ const PokemonDetail = () => {
   }
 
   const translatedTypes = pokemon.types.map((type) => t(type));
-  const pokemonTypeColor = typeColors[pokemon.types[0]] || '#FFF';
-  const isDarkTheme = document.body.classList.contains('dark-theme');
+  const pokemonTypeColor = typeColors[pokemon.types[0]] || theme.palette.background.paper;
+  const textColor = theme.palette.text.primary;
+  const boxShadowColor = theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.2)';
   const wikiUrl = `https://pokemon.fandom.com/wiki/${pokemon.name}`;
-  const boxStyle = isDarkTheme
-    ? { backgroundColor: '#333', color: '#fff' }
-    : { backgroundColor: '#fff', color: '#000' };
+
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-      <Card
-        style={{
-          maxWidth: 800,
-          margin: '40px auto',
-          padding: '20px',
-          backgroundColor: pokemonTypeColor,
-          borderRadius: '15px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-        }}
-      >
-        <CardContent>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <img
-              src={pokemon.imageUrl}
-              alt={pokemon.name}
-              style={{
-                width: '250px',
-                marginBottom: '20px',
-                borderRadius: '20px',
-                boxShadow: '0px 4px 15px rgba(0,0,0,0.3)',
-              }}
-            />
-            <Typography variant="h4" style={{ textTransform: 'capitalize', fontWeight: 'bold', color: '#fff' }}>
-              #{pokemon.id} {pokemon.name}
-            </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('type')}: ${translatedTypes.join(', ')}`}
-            </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('height')}: ${pokemon.height} m`}
-            </Typography>
-            <Typography variant="body1" style={{ color: '#fff' }}>
-              {`${t('weight')}: ${pokemon.weight} kg`}
-            </Typography>
-          </Box>
+<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+  <Card
+    style={{
+      maxWidth: 800,
+      margin: '40px auto',
+      padding: '20px',
+      backgroundColor: pokemonTypeColor,
+      borderRadius: '15px',
+      boxShadow: `0 4px 8px ${boxShadowColor}`,
+    }}
+  >
+    <CardContent>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <img
+          src={pokemon.imageUrl}
+          alt={pokemon.name}
+          style={{
+            width: '250px',
+            marginBottom: '20px',
+            borderRadius: '20px',
+            boxShadow: `0px 4px 15px ${boxShadowColor}`,
+          }}
+        />
+        <Typography
+          variant="h4"
+          style={{
+            textTransform: 'capitalize',
+            fontWeight: 'bold',
+            color: textColor,
+          }}
+        >
+          #{pokemon.id} {pokemon.name}
+        </Typography>
+        <Typography variant="body1" style={{ color: textColor }}>
+          {`${t('type')}: ${translatedTypes.join(', ')}`}
+        </Typography>
+        <Typography variant="body1" style={{ color: textColor }}>
+          {`${t('height')}: ${pokemon.height} m`}
+        </Typography>
+        <Typography variant="body1" style={{ color: textColor }}>
+          {`${t('weight')}: ${pokemon.weight} kg`}
+        </Typography>
+      </Box>
 
           <Box display="flex" justifyContent="center" marginTop="20px">
             <Button
@@ -115,8 +123,8 @@ const PokemonDetail = () => {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                backgroundColor: '#FFCB05',
-                color: '#3B4CCA',
+                backgroundColor: pokemonTypeColor,
+                color: theme.palette.text.primary,
                 fontWeight: 'bold',
                 textTransform: 'none',
                 borderRadius: '8px',
@@ -126,129 +134,133 @@ const PokemonDetail = () => {
             </Button>
           </Box>
 
-          <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
-            {t('stats')}
-          </Typography>
-          <Grid container spacing={2} style={{ marginTop: '10px' }}>
-            {pokemon.stats.map((stat, index) => {
-              const [statName, statValue] = stat.split(':');
-              return (
-                <Grid item xs={6} sm={4} key={index}>
-                  <Card
-                    style={{
-                      padding: '10px',
-                      backgroundColor: boxStyle.backgroundColor,
-                      color: boxStyle.color,
-                      borderRadius: '10px',
-                      boxShadow: '0px 2px 10px rgba(0,0,0,0.1)',
-                    }}
-                  >
-                    <Typography variant="body2" style={{ fontWeight: 'bold' }}>
-                      {t(statName)}:
-                    </Typography>
-                    <Typography variant="body2">{statValue}</Typography>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
+          <PokemonStatChart stats={pokemon.stats} name={pokemon.name} types={pokemon.types} />
 
-          <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
-            {t('abilities')}
-          </Typography>
-          <Grid container spacing={2} style={{ marginTop: '10px' }}>
-            {pokemon.abilities.map((ability, index) => (
-              <Grid item xs={12} sm={6} key={index}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  fullWidth
-                  onClick={() => navigate(`/ability/${ability.url.split('/').slice(-2, -1)[0]}`)}
-                  style={{
-                    backgroundColor: boxStyle.backgroundColor,
-                    color: boxStyle.color,
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  {t(ability.name)} ({ability.isHidden ? t('hiddenAbility') : t('regularAbility')})
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
 
-          <Typography variant="h6" style={{ marginTop: '30px', fontWeight: 'bold', color: '#fff' }}>
-            {t('evolutionChain')}
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            gap="20px"
-            marginTop="20px"
-            padding="10px"
-            style={{
-              backgroundColor: boxStyle.backgroundColor,
-              color: boxStyle.color,
-              borderRadius: '10px',
-              boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
-            }}
-          >
-            {evolutionChain.length > 0 ? (
-              evolutionChain.map((step, index) => (
-                <React.Fragment key={index}>
-                  <Box
-                    onClick={() => navigate(`/pokemon/${step.id}`)}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{
-                      cursor: 'pointer',
-                      transition: 'transform 0.3s ease',
-                      backgroundColor: '#f4f4f4',
-                      borderRadius: '10px',
-                      padding: '10px',
-                      boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                  >
-                    <img
-                      src={step.imageUrl}
-                      alt={step.name}
-                      style={{
-                        width: '80px',
-                        height: '80px',
-                        marginBottom: '5px',
-                        borderRadius: '50%',
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      style={{ textTransform: 'capitalize', fontWeight: 'bold', color: '#333' }}
-                    >
-                      {step.name}
-                    </Typography>
-                  </Box>
-                  {index < evolutionChain.length - 1 && (
-                    <Typography style={{ fontSize: '30px', color: '#rgba(0,0,0,0)' }}>→</Typography>
-                  )}
-                </React.Fragment>
-              ))
-            ) : (
+      <Typography
+        variant="h6"
+        style={{
+          marginTop: '30px',
+          fontWeight: 'bold',
+          color: theme.palette.text.primary,
+        }}
+      >
+        {t('abilities')}
+      </Typography>
+      <Grid container spacing={2} style={{ marginTop: '10px' }}>
+        {pokemon.abilities.map((ability, index) => (
+          <Grid item xs={12} sm={6} key={index}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => navigate(`/ability/${ability.url.split('/').slice(-2, -1)[0]}`)}
+              style={{
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.text.primary,
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                borderRadius: theme.shape.borderRadius,
+                boxShadow: theme.shadows[2],
+              }}
+            >
+              {t(ability.name)} ({ability.isHidden ? t('hiddenAbility') : t('regularAbility')})
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+
               <Typography
-                variant="body1"
-                style={{
-                  fontWeight: 'bold',
-                  color: '#ff9800',
-                  textAlign: 'center',
-                  fontSize: '18px',
-                }}
-              >
-                {t('finalEvolution')}
-              </Typography>
-            )}
+          variant="h6"
+          style={{
+            marginTop: '30px',
+            fontWeight: 'bold',
+            color: theme.palette.text.primary,
+          }}
+        >
+          {t('evolutionChain')}
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+          gap="20px"
+          marginTop="20px"
+          padding="10px"
+          style={{
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            borderRadius: theme.shape.borderRadius,
+            boxShadow: theme.shadows[3],
+          }}
+        >
+          {evolutionChain.length > 0 ? (
+            evolutionChain.map((step, index) => (
+              <React.Fragment key={index}>
+                <Box
+                  onClick={() => navigate(`/pokemon/${step.id}`)}
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s ease',
+                    backgroundColor: theme.palette.background.default,
+                    borderRadius: theme.shape.borderRadius,
+                    padding: '10px',
+                    boxShadow: theme.shadows[2],
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                >
+                  <img
+                    src={step.imageUrl}
+                    alt={step.name}
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      marginBottom: '5px',
+                      borderRadius: '50%',
+                      boxShadow: theme.shadows[1],
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    style={{
+                      textTransform: 'capitalize',
+                      fontWeight: 'bold',
+                      color: theme.palette.text.primary,
+                    }}
+                  >
+                    {step.name}
+                  </Typography>
+                </Box>
+                {index < evolutionChain.length - 1 && (
+                  <Typography
+                    style={{
+                      fontSize: '30px',
+                      color: theme.palette.text.secondary,
+                    }}
+                  >
+                    ➞
+                  </Typography>
+                )}
+              </React.Fragment>
+            ))
+          ) : (
+            <Typography
+              variant="body1"
+              style={{
+                fontWeight: 'bold',
+                color: theme.palette.warning.main,
+                textAlign: 'center',
+                fontSize: '18px',
+              }}
+            >
+              {t('finalEvolution')}
+            </Typography>
+          )}
           </Box>
         </CardContent>
       </Card>
