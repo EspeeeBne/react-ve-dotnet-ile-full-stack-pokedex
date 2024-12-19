@@ -22,12 +22,13 @@
 ## 🔧 Teknolojiler
 
 ### Front-end:
-- **React.js**: Kullanıcı arayüzü için.
-- **Material-UI (MUI)**: Uygulamanın stil ve tasarımı için.
-- **Axios**: API isteklerini yapmak için.
-- **React Router**: Sayfalar arası gezinme için.
-- **Framer Motion**: Animasyonlar için.
-- **i18next**: Çoklu dil desteği.
+- **React.js**: Kullanıcı arayüzü oluşturmak için.
+- **Material-UI (MUI)**: Uygulamanın stil ve tasarım bileşenleri için.
+- **Axios**: API isteklerini yönetmek için.
+- **React Router**: Sayfalar arası gezinme işlevselliği için.
+- **Framer Motion**: Dinamik animasyonlar ve geçiş efektleri için.
+- **i18next**: Çoklu dil desteğini entegre etmek için.
+- **Chart.js**: Pokemon istatistiklerini görselleştirmek için bar grafik desteği.
 
 ### Back-end:
 - **.NET 9.0**: Back-end.
