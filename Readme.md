@@ -15,7 +15,7 @@
 - **Dinamik Arka Plan ve Yazı Renkleri**: Pokémon türlerine göre arka plan renkleri dinamik olarak değişir.
 - **Pokémon İstatistikleri**: HP, saldırı, savunma gibi Pokémon'un temel istatistiklerini şık bir şekilde görüntüleyebilirsiniz.
 - **Pokémon Skilleri**: Pokémon'un kullanabildiği skill'ler ve bu skill'lere tıklayarak detaylı anlatımıyla bu skill'i kullanan başka pokémonlara bakabilme.
-- **Pokémon Karşılaştırma**: Pokémon'ları karşılaştırmaya yarayan bir özellik detaylarına bakıp karşılaştırma yapmanıza yarar.
+- **Pokémon Karşılaştırma**: İki Pokémon'un istatistiklerini **radar grafik** üzerinden karşılaştırarak analiz yapabilirsiniz ek olarak pokémon'lara da erişebiliyorsunuz o menüden.
 - **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik ateş türündeki pokémon mu yoksa elektrik mi seçip hepsini görebilme.
 ---
 
@@ -114,16 +114,19 @@ Açıklama: Pokémon'ların Skillerini görüp veriyi çekipo skill'e özel sayf
 ---
 
 ## 🏆 Öne Çıkan Özellikler
-Zengin Görsel İçerik: Pokémon'ların resimleri ve detayları özenle yerleştirildi.
-Karmaşık Bilgiler: Pokémon türlerine ve istatistiklerine göre detaylı görseller ve bilgi sunuyor.
-Kapsamlı API: API'den gelen veriler ile her Pokémon için tüm bilgileri dinamik olarak alıyoruz.
-Kolay Kullanım: Basit ve anlaşılır arayüz, kullanıcı dostu özelliklerle kullanıcıların kolayca gezinebileceği şekilde tasarlandı.
-Dinamik Evrim Zinciri: Pokémon'un evrim zincirinde bulunan Pokémon'lar kutular içinde görüntülenir ve tıklanabilir.
-Görsel Uyum: Pokémon türlerine göre değişen arka plan ve stil renkleri.
-Kullanıcı Dostu: Basit, şık ve dinamik arayüz ile kolay gezinme.
-Türe Göre arama: Pokémon'ların türlerine göre filtreleme ile o türde hangi Pokémon var öğrenme.
-Skill sayfası ve Skill'ler: Skill'lere basıp Skill'in açıklamasını ve Skill'in hangi Pokémon'larda olduğunu görebilme ve olan Pokémon da görme.
-Pokémon Evrim Ağacı: Pokémon'ların neye evrimleşebildiğini görebilme.
+
+- **Zengin Görsel İçerik**: Pokémon'ların resimleri ve detayları özenle yerleştirildi.
+- **Karmaşık Bilgiler**: Pokémon türlerine ve istatistiklerine göre detaylı görseller ve bilgi sunuyor.
+- **Kapsamlı API**: API'den gelen veriler ile her Pokémon için tüm bilgileri dinamik olarak alıyoruz.
+- **Kolay Kullanım**: Basit ve anlaşılır arayüz, kullanıcı dostu özelliklerle kullanıcıların kolayca gezinebileceği şekilde tasarlandı.
+- **Dinamik Evrim Zinciri**: Pokémon'un evrim zincirinde bulunan Pokémon'lar kutular içinde görüntülenir ve tıklanabilir.
+- **Görsel Uyum**: Pokémon türlerine göre değişen arka plan ve stil renkleri.
+- **Kullanıcı Dostu**: Basit, şık ve dinamik arayüz ile kolay gezinme.
+- **Türe Göre Arama**: Pokémon'ların türlerine göre filtreleme ile o türde hangi Pokémon var öğrenme.
+- **Skill Sayfası ve Skill'ler**: Skill'lere basıp Skill'in açıklamasını ve Skill'in hangi Pokémon'larda olduğunu görebilme ve olan Pokémon'ları listeleme.
+- **Pokémon Evrim Ağacı**: Pokémon'ların neye evrimleşebildiğini görebilme.
+- **Pokémon'ları Karşılaştırma**: Pokémonları örümcek grafik ve normal görünüm ile karşılaştırma.
+
 
 ---
 
