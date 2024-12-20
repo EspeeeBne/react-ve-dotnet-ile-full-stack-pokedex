@@ -11,7 +11,6 @@ import {
   Legend,
 } from 'chart.js';
 
-// Gerekli Chart.js bileşenlerini kaydet
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const PokemonStatBarChart = ({ stats, name }) => {

@@ -49,5 +49,7 @@
     "comparePokemon":"Compare Pokémons",
     "compare":"Compare",
     "selectSecondPokemon":"Select Second Pokémon",
-    "selectFirstPokemon":"Select First Pokémon"
+    "selectFirstPokemon":"Select First Pokémon",
+    "and":"and",
+    "comparison":"comparison"
 }

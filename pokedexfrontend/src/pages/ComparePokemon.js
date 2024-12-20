@@ -5,6 +5,7 @@ import { Typography, Card, CardContent, Box, Grid, CircularProgress, Button, use
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PokemonStatChart from '../components/PokemonStatChart';
+import PokemonCompareRadar from '../components/PokemonCompareWithRadar';
 
 const typeColors = {
   grass: '#78C850',
@@ -247,10 +248,25 @@ const PokemonCompare = () => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+            <Typography
+        variant="h4"
+        align="center"
+        style={{
+          margin: '20px 0',
+          fontWeight: 'bold',
+          color: theme.palette.text.primary,
+        }}
+      >
+        {`${t(pokemon1.name)} ${t('and')} ${t(pokemon2.name)} ${t('comparison')}`}
+      </Typography>
+              <Box display="flex" justifyContent="center" alignItems="center" marginTop="20px">
+        <PokemonCompareRadar pokemon1={pokemon1} pokemon2={pokemon2} />
+      </Box>
       <Box display="flex" justifyContent="center" margin="20px" gap="20px">
         {renderPokemonCard(pokemon1, evolution1)}
         {renderPokemonCard(pokemon2, evolution2)}
-      </Box>
+        </Box>
+
     </motion.div>
   );
 };
