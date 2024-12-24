@@ -55,6 +55,12 @@ const PokemonCard = ({ pokemon }) => {
             <Typography variant="body2">
               {t('height')}: {pokemon.height} m | {t('weight')}: {pokemon.weight} kg
             </Typography>
+            <Typography variant="body2" style={{ marginTop: '10px' }}>
+              {t('region')}: {pokemon.region ? t(pokemon.region) : t('unknown')}
+            </Typography>
+            <Typography variant="body2">
+              {t('generation')}: {pokemon.generation ? t(pokemon.generation) : t('unknown')}
+            </Typography>
           </Box>
         </CardContent>
       </Card>

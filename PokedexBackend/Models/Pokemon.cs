@@ -7,5 +7,7 @@ namespace PokedexBackend.Models
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public List<string> Types { get; set; }
+        public string Region { get; set; }
+        public string Generation { get; set; }
     }
 }

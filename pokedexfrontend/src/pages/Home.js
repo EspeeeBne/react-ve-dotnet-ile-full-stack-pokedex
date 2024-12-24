@@ -30,6 +30,36 @@ const Home = () => {
   const [comparePokemon2, setComparePokemon2] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedGeneration, setSelectedGeneration] = useState('');
+
+
+  const fetchPokemonByRegion = async (region) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:5145/api/pokemon/filter/region/${region}`);
+      setPokemonList(response.data);
+    } catch (error) {
+      console.error('Error fetching Pokémon by region:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPokemonByGeneration = async (generation) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5145/api/pokemon/filter/generation/${generation}`
+      );
+      setPokemonList(response.data);
+    } catch (error) {
+      console.error('Error fetching Pokémon by generation:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchPokemonList = async () => {
     try {
       const response = await axios.get('http://localhost:5145/api/pokemon/all/details');
@@ -55,6 +85,40 @@ const Home = () => {
   useEffect(() => {
     fetchPokemonList();
   }, []);
+
+  const generationMapping = {
+    i: 1,
+    ii: 2,
+    iii: 3,
+    iv: 4,
+    v: 5,
+    vi: 6,
+    vii: 7,
+    viii: 8,
+    ix: 9,
+  };
+
+  const handleRegionChange = (event) => {
+    const region = event.target.value;
+    setSelectedRegion(region);
+    if (region) {
+      fetchPokemonByRegion(region);
+    } else {
+      fetchPokemonList();
+    }
+  };
+
+
+  const handleGenerationChange = (event) => {
+    const generation = event.target.value;
+    setSelectedGeneration(generation);
+    if (generation) {
+      const generationNumber = generationMapping[generation];
+      fetchPokemonByGeneration(generationNumber);
+    } else {
+      fetchPokemonList();
+    }
+  };
 
   const handleTypeChange = (event) => {
     const type = event.target.value;
@@ -143,7 +207,85 @@ const Home = () => {
             <MenuItem value="dark">{t('dark')}</MenuItem>
           </Select>
         </Box>
-      </Box>
+
+
+  <Box display="flex" alignItems="center" gap="10px">
+    <Typography
+      variant="h6"
+      style={{
+        color: theme.palette.text.primary,
+        fontWeight: 'bold',
+      }}
+    >
+      {t('filterByRegion')}:
+    </Typography>
+    <Select
+      value={selectedRegion}
+      onChange={handleRegionChange}
+      displayEmpty
+      style={{
+        minWidth: 150,
+        height: 40,
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.shape.borderRadius,
+        color: theme.palette.text.primary,
+        boxShadow: theme.shadows[2],
+      }}
+    >
+      <MenuItem value="">
+        <em>{t('all')}</em>
+      </MenuItem>
+      <MenuItem value="kanto">{t('kanto')}</MenuItem>
+      <MenuItem value="johto">{t('johto')}</MenuItem>
+      <MenuItem value="hoenn">{t('hoenn')}</MenuItem>
+      <MenuItem value="sinnoh">{t('sinnoh')}</MenuItem>
+      <MenuItem value="unova">{t('unova')}</MenuItem>
+      <MenuItem value="kalos">{t('kalos')}</MenuItem>
+      <MenuItem value="alola">{t('alola')}</MenuItem>
+      <MenuItem value="galar">{t('galar')}</MenuItem>
+      <MenuItem value="paldea">{t('paldea')}</MenuItem>
+    </Select>
+  </Box>
+
+
+  <Box display="flex" alignItems="center" gap="10px">
+    <Typography
+      variant="h6"
+      style={{
+        color: theme.palette.text.primary,
+        fontWeight: 'bold',
+      }}
+    >
+      {t('filterByGeneration')}:
+    </Typography>
+    <Select
+      value={selectedGeneration}
+      onChange={handleGenerationChange}
+      displayEmpty
+      style={{
+        minWidth: 150,
+        height: 40,
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.shape.borderRadius,
+        color: theme.palette.text.primary,
+        boxShadow: theme.shadows[2],
+      }}
+    >
+      <MenuItem value="">
+        <em>{t('all')}</em>
+      </MenuItem>
+      <MenuItem value="i">{t('generation1')}</MenuItem>
+      <MenuItem value="ii">{t('generation2')}</MenuItem>
+      <MenuItem value="iii">{t('generation3')}</MenuItem>
+      <MenuItem value="iv">{t('generation4')}</MenuItem>
+      <MenuItem value="v">{t('generation5')}</MenuItem>
+      <MenuItem value="vi">{t('generation6')}</MenuItem>
+      <MenuItem value="vii">{t('generation7')}</MenuItem>
+      <MenuItem value="viii">{t('generation8')}</MenuItem>
+      <MenuItem value="ix">{t('generation9')}</MenuItem>
+    </Select>
+  </Box>
+  </Box>
 
       <Drawer anchor="left" open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <Box

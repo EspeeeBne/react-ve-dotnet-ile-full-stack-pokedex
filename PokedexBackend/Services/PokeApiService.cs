@@ -24,39 +24,41 @@ namespace PokedexBackend.Services
 
             var data = JObject.Parse(json);
 
-            var types = data["types"]
-                .Select(t => t["type"]["name"].ToString())
-                .ToList();
+            var speciesResponse = await _httpClient.GetAsync(data["species"]["url"].ToString());
+            speciesResponse.EnsureSuccessStatusCode();
+            var speciesJson = await speciesResponse.Content.ReadAsStringAsync();
+            var speciesData = JObject.Parse(speciesJson);
 
+            var generation = speciesData["generation"]?["name"]?.ToString() ?? "Unknown";
+            var region = GetRegionFromGeneration(generation) ?? "Unknown";
+
+            var types = data["types"]?.Select(t => t["type"]["name"]?.ToString()).ToList() ?? new List<string> { "Unknown" };
             var stats = data["stats"]
-                .Select(s => new
-                {
-                    statName = s["stat"]["name"].ToString(),
-                    baseStat = s["base_stat"].ToString()
-                })
-                .ToList();
+                ?.Select(s => $"{s["stat"]["name"].ToString()}: {s["base_stat"]}")
+                .ToList() ?? new List<string>();
 
-            var abilities = data["abilities"]
-                .Select(a => new PokemonAbility
-                {
-                    Name = a["ability"]["name"].ToString(),
-                    Url = a["ability"]["url"].ToString(),
-                    IsHidden = (bool)a["is_hidden"]
-                })
-                .ToList();
+            var abilities = data["abilities"]?.Select(a => new PokemonAbility
+            {
+                Name = a["ability"]?["name"]?.ToString() ?? "Unknown",
+                Url = a["ability"]?["url"]?.ToString() ?? "",
+                IsHidden = a["is_hidden"]?.ToObject<bool>() ?? false
+            }).ToList() ?? new List<PokemonAbility>();
 
             return new PokemonDetail
             {
-                Id = (int)data["id"],
-                Name = (string)data["name"],
+                Id = data["id"]?.ToObject<int>() ?? 0,
+                Name = data["name"]?.ToString() ?? "Unknown",
                 Types = types,
+                Stats = stats,
                 ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png",
-                Height = (double)data["height"] / 10,
-                Weight = (double)data["weight"] / 10,
-                Stats = stats.Select(stat => $"{stat.statName}: {stat.baseStat}").ToList(),
-                Abilities = abilities
+                Height = (data["height"]?.ToObject<double>() ?? 0.0) / 10,
+                Weight = (data["weight"]?.ToObject<double>() ?? 0.0) / 10,
+                Abilities = abilities,
+                Generation = generation,
+                Region = region
             };
         }
+
 
         public async Task<List<Pokemon>> SearchPokemonByNameAsync(string name)
         {
@@ -96,28 +98,33 @@ namespace PokedexBackend.Services
                 var detailJson = await detailResponse.Content.ReadAsStringAsync();
                 var data = JObject.Parse(detailJson);
 
-                var types = data["types"]
-                    .Select(t => t["type"]["name"].ToString())
-                    .ToList();
+                var speciesResponse = await _httpClient.GetAsync(data["species"]["url"].ToString());
+                speciesResponse.EnsureSuccessStatusCode();
+                var speciesJson = await speciesResponse.Content.ReadAsStringAsync();
+                var speciesData = JObject.Parse(speciesJson);
 
-                var abilities = data["abilities"]
-                    .Select(a => new PokemonAbility
-                    {
-                        Name = a["ability"]["name"].ToString(),
-                        Url = a["ability"]["url"].ToString(),
-                        IsHidden = (bool)a["is_hidden"]
-                    })
-                    .ToList();
+                var generation = speciesData["generation"]?["name"]?.ToString() ?? "Unknown";
+                var region = GetRegionFromGeneration(generation) ?? "Unknown";
+
+                var stats = data["stats"]
+                    ?.Select(s => $"{s["stat"]["name"]?.ToString()}: {s["base_stat"]}")
+                    .ToList() ?? new List<string>();
+
+                var types = data["types"]
+                    ?.Select(t => t["type"]["name"]?.ToString())
+                    .ToList() ?? new List<string>();
 
                 return new PokemonDetail
                 {
-                    Id = (int)data["id"],
-                    Name = (string)data["name"],
+                    Id = data["id"]?.ToObject<int>() ?? 0,
+                    Name = data["name"]?.ToString() ?? "Unknown",
                     Types = types,
-                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{(int)data["id"]}.png",
-                    Height = (double)data["height"] / 10,
-                    Weight = (double)data["weight"] / 10,
-                    Abilities = abilities
+                    Stats = stats,
+                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{data["id"]?.ToObject<int>()}.png",
+                    Height = (data["height"]?.ToObject<double>() ?? 0.0) / 10,
+                    Weight = (data["weight"]?.ToObject<double>() ?? 0.0) / 10,
+                    Generation = generation,
+                    Region = region
                 };
             });
 
@@ -187,41 +194,6 @@ namespace PokedexBackend.Services
             return abilityDetail;
         }
 
-        public async Task<List<PokemonDetail>> GetPokemonByTypeAsync(string type)
-        {
-            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/type/{type}");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            var data = JObject.Parse(json);
-
-            var pokemonUrls = data["pokemon"]
-                .Select(p => p["pokemon"]["url"].ToString())
-                .ToList();
-
-            var tasks = pokemonUrls.Select(async url =>
-            {
-                var detailResponse = await _httpClient.GetAsync(url);
-                detailResponse.EnsureSuccessStatusCode();
-                var detailJson = await detailResponse.Content.ReadAsStringAsync();
-                var pokemonData = JObject.Parse(detailJson);
-
-                var types = pokemonData["types"]
-                    .Select(t => t["type"]["name"].ToString())
-                    .ToList();
-
-                return new PokemonDetail
-                {
-                    Id = (int)pokemonData["id"],
-                    Name = (string)pokemonData["name"],
-                    Types = types,
-                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{(int)pokemonData["id"]}.png",
-                    Height = (double)pokemonData["height"] / 10,
-                    Weight = (double)pokemonData["weight"] / 10
-                };
-            });
-
-            return (await Task.WhenAll(tasks)).ToList();
-        }
 
         private async Task<string> GetPokemonTypeAsync(int pokemonId)
         {
@@ -231,6 +203,215 @@ namespace PokedexBackend.Services
             var data = JObject.Parse(json);
 
             return data["types"][0]["type"]["name"].ToString();
+        }
+
+
+        public async Task<List<PokemonDetail>> GetPokemonByTypeAsync(string type)
+        {
+            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/type/{type}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(json);
+
+            var pokemonUrls = data["pokemon"]?.Select(p => p["pokemon"]["url"]?.ToString()).ToList() ?? new List<string>();
+
+            var tasks = pokemonUrls.Select(async url =>
+            {
+                var detailResponse = await _httpClient.GetAsync(url);
+                detailResponse.EnsureSuccessStatusCode();
+                var detailJson = await detailResponse.Content.ReadAsStringAsync();
+                var pokemonData = JObject.Parse(detailJson);
+
+                var speciesResponse = await _httpClient.GetAsync(pokemonData["species"]["url"]?.ToString() ?? "");
+                speciesResponse.EnsureSuccessStatusCode();
+                var speciesJson = await speciesResponse.Content.ReadAsStringAsync();
+                var speciesData = JObject.Parse(speciesJson);
+
+                var generation = speciesData["generation"]?["name"]?.ToString() ?? "Unknown";
+                var region = GetRegionFromGeneration(generation) ?? "Unknown";
+
+                var types = pokemonData["types"]?.Select(t => t["type"]["name"]?.ToString()).ToList() ?? new List<string> { "Unknown" };
+
+                var stats = pokemonData["stats"]
+                    ?.Select(s => $"{s["stat"]["name"]?.ToString()}: {s["base_stat"]}")
+                    .ToList() ?? new List<string>();
+
+                return new PokemonDetail
+                {
+                    Id = pokemonData["id"]?.ToObject<int>() ?? 0,
+                    Name = pokemonData["name"]?.ToString() ?? "Unknown",
+                    Types = types,
+                    Stats = stats,
+                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemonData["id"]?.ToObject<int>()}.png",
+                    Height = (pokemonData["height"]?.ToObject<double>() ?? 0.0) / 10,
+                    Weight = (pokemonData["weight"]?.ToObject<double>() ?? 0.0) / 10,
+                    Generation = generation,
+                    Region = region
+                };
+            });
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+
+
+        public async Task<List<PokemonDetail>> GetPokemonByRegionAsync(string region)
+        {
+            var generation = GetGenerationFromRegion(region);
+
+            if (generation == "Unknown")
+                throw new Exception($"Region '{region}' is invalid or not supported.");
+
+            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/region/{region}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(json);
+
+            var pokedexUrls = data["pokedexes"]
+                ?.Select(p => p["url"]?.ToString())
+                .Where(url => !string.IsNullOrEmpty(url))
+                .ToList();
+
+            var tasks = pokedexUrls.Select(async url =>
+            {
+                var pokedexResponse = await _httpClient.GetAsync(url);
+                pokedexResponse.EnsureSuccessStatusCode();
+                var pokedexJson = await pokedexResponse.Content.ReadAsStringAsync();
+                var pokedexData = JObject.Parse(pokedexJson);
+
+                var pokemonEntries = pokedexData["pokemon_entries"]
+                    ?.Select(entry => entry["pokemon_species"]["url"].ToString())
+                    .ToList();
+
+                var pokemonTasks = pokemonEntries.Select(async speciesUrl =>
+                {
+                    var speciesResponse = await _httpClient.GetAsync(speciesUrl);
+                    speciesResponse.EnsureSuccessStatusCode();
+                    var speciesJson = await speciesResponse.Content.ReadAsStringAsync();
+                    var speciesData = JObject.Parse(speciesJson);
+
+                    var pokemonResponse = await _httpClient.GetAsync(speciesUrl.Replace("-species", ""));
+                    pokemonResponse.EnsureSuccessStatusCode();
+                    var pokemonJson = await pokemonResponse.Content.ReadAsStringAsync();
+                    var pokemonData = JObject.Parse(pokemonJson);
+
+                    var stats = pokemonData["stats"]
+                        ?.Select(s => $"{s["stat"]["name"]?.ToString()}: {s["base_stat"]}")
+                        .ToList() ?? new List<string>();
+
+                    var types = pokemonData["types"]
+                        ?.Select(t => t["type"]["name"]?.ToString())
+                        .ToList() ?? new List<string>();
+
+                    return new PokemonDetail
+                    {
+                        Id = pokemonData["id"]?.ToObject<int>() ?? 0,
+                        Name = pokemonData["name"]?.ToString() ?? "Unknown",
+                        Types = types,
+                        Stats = stats,
+                        ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemonData["id"]?.ToObject<int>()}.png",
+                        Height = (pokemonData["height"]?.ToObject<double>() ?? 0.0) / 10,
+                        Weight = (pokemonData["weight"]?.ToObject<double>() ?? 0.0) / 10,
+                        Generation = generation,
+                        Region = region
+                    };
+                });
+
+                return await Task.WhenAll(pokemonTasks);
+            });
+
+            return (await Task.WhenAll(tasks)).SelectMany(p => p).ToList();
+        }
+
+        public async Task<List<PokemonDetail>> GetPokemonByGenerationAsync(string generation)
+        {
+            var region = GetRegionFromGeneration(generation);
+
+            if (region == "Unknown")
+                throw new Exception($"Generation '{generation}' is invalid or not supported.");
+
+            var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/generation/{generation}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JObject.Parse(json);
+
+            var pokemonUrls = data["pokemon_species"]
+                ?.Select(p => p["url"]?.ToString())
+                .Where(url => !string.IsNullOrEmpty(url))
+                .ToList();
+
+            var tasks = pokemonUrls.Select(async url =>
+            {
+                var speciesResponse = await _httpClient.GetAsync(url);
+                speciesResponse.EnsureSuccessStatusCode();
+                var speciesJson = await speciesResponse.Content.ReadAsStringAsync();
+                var speciesData = JObject.Parse(speciesJson);
+
+                var pokemonResponse = await _httpClient.GetAsync(url.Replace("-species", ""));
+                pokemonResponse.EnsureSuccessStatusCode();
+                var pokemonJson = await pokemonResponse.Content.ReadAsStringAsync();
+                var pokemonData = JObject.Parse(pokemonJson);
+
+                var stats = pokemonData["stats"]
+                    ?.Select(s => $"{s["stat"]["name"]?.ToString()}: {s["base_stat"]}")
+                    .ToList() ?? new List<string>();
+
+                var types = pokemonData["types"]
+                    ?.Select(t => t["type"]["name"]?.ToString())
+                    .ToList() ?? new List<string>();
+
+                return new PokemonDetail
+                {
+                    Id = pokemonData["id"]?.ToObject<int>() ?? 0,
+                    Name = pokemonData["name"]?.ToString() ?? "Unknown",
+                    Types = types,
+                    Stats = stats,
+                    ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemonData["id"]?.ToObject<int>()}.png",
+                    Height = (pokemonData["height"]?.ToObject<double>() ?? 0.0) / 10,
+                    Weight = (pokemonData["weight"]?.ToObject<double>() ?? 0.0) / 10,
+                    Generation = generation,
+                    Region = region
+                };
+            });
+
+            return (await Task.WhenAll(tasks)).ToList();
+        }
+
+
+        private string GetRegionFromGeneration(string generation)
+        {
+            return generation switch
+            {
+                "generation-i" => "Kanto",
+                "generation-ii" => "Johto",
+                "generation-iii" => "Hoenn",
+                "generation-iv" => "Sinnoh",
+                "generation-v" => "Unova",
+                "generation-vi" => "Kalos",
+                "generation-vii" => "Alola",
+                "generation-viii" => "Galar",
+                "generation-ix" => "Paldea",
+                _ => "Unknown"
+            };
+        }
+
+        private static readonly Dictionary<string, string> RegionGenerationMapping = new Dictionary<string, string>
+{
+    { "kanto", "1" },
+    { "johto", "2" },
+    { "hoenn", "3" },
+    { "sinnoh", "4" },
+    { "unova", "5" },
+    { "kalos", "6" },
+    { "alola", "7" },
+    { "galar", "8" },
+    { "paldea", "9" }
+};
+
+
+
+        private string GetGenerationFromRegion(string region)
+        {
+            return RegionGenerationMapping.GetValueOrDefault(region, "Unknown");
         }
     }
 }

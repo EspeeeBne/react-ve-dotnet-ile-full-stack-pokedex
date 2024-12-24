@@ -95,7 +95,9 @@ const PokemonCompare = () => {
             <Typography style={{ color: textColor }}>{`${t('type')}: ${translatedTypes.join(', ')}`}</Typography>
             <Typography style={{ color: textColor }}>{`${t('height')}: ${pokemon.height} m`}</Typography>
             <Typography style={{ color: textColor }}>{`${t('weight')}: ${pokemon.weight} kg`}</Typography>
-          </Box>
+            <Typography style={{ color: textColor }}>{`${t('region')}: ${t(pokemon.region)}`}</Typography>
+            <Typography style={{ color: textColor }}>{`${t('generation')}: ${t(pokemon.generation)}`}</Typography>
+  </Box>
 
           <Box display="flex" justifyContent="center" marginTop="20px">
             <Button

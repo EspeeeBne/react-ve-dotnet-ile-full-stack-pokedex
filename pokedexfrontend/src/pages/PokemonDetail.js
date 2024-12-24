@@ -114,6 +114,12 @@ const PokemonDetail = () => {
         <Typography variant="body1" style={{ color: textColor }}>
           {`${t('weight')}: ${pokemon.weight} kg`}
         </Typography>
+        <Typography variant="body1" style={{ color: textColor }}>
+        {`${t('region')}: ${t(pokemon.region)}`}
+        </Typography>
+        <Typography variant="body1" style={{ color: textColor }}>
+        {`${t('generation')}: ${t(pokemon.generation)}`}
+      </Typography>
       </Box>
 
           <Box display="flex" justifyContent="center" marginTop="20px">

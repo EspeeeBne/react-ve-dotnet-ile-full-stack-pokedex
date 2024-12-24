@@ -102,7 +102,6 @@ Belirli bir Pokémon'un detaylarını döner.
 GET /api/pokemon/search/{name}
 Pokémon ismi ile arama yaparak ilgili Pokémon'u döner.
 
-
 1. Evrim Zinciri
 GET /api/pokemon/evolution/{id}
 Açıklama: Pokémon'un evrim zincirini döner.
@@ -110,6 +109,18 @@ Açıklama: Pokémon'un evrim zincirini döner.
 1. Pokémon Skillerini Görme
 GET /api/pokemon/ability/{abilityId}
 Açıklama: Pokémon'ların Skillerini görüp veriyi çekipo skill'e özel sayfa için kullanılan bir çağrı.
+
+1. Pokémon seriye göre filtreleme
+GET /filter/generation/{generationId}
+Açıklama: Pokémon'ları serilerine göre filtreleyebiliyorsunuz.
+
+1. Pokémon Bölgesine göre filtreleme
+GET /filter/region/{regionId}
+Açıklama: Pokémon'ları bulundukları bölgelere göre filtreleme.
+
+1. Pokémon'ları türlerine göre filtreleme
+GET /filter/type/{type}
+Açıklama: Pokémon'ları türlerine göre filtreleme.
 
 ---
 
@@ -126,6 +137,8 @@ Açıklama: Pokémon'ların Skillerini görüp veriyi çekipo skill'e özel sayf
 - **Skill Sayfası ve Skill'ler**: Skill'lere basıp Skill'in açıklamasını ve Skill'in hangi Pokémon'larda olduğunu görebilme ve olan Pokémon'ları listeleme.
 - **Pokémon Evrim Ağacı**: Pokémon'ların neye evrimleşebildiğini görebilme.
 - **Pokémon'ları Karşılaştırma**: Pokémonları örümcek grafik ve normal görünüm ile karşılaştırma.
+- **Bulundukları Bölgeye Göre Filtreleme**: Pokémon'ları bulundukları bölgelere göre filtreleyebilme.
+- **Seriye göre filtreleme**: Pokémon'ları seriye göre filtreleme.
 
 
 ---

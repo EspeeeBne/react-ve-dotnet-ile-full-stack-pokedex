@@ -11,5 +11,7 @@ namespace PokedexBackend.Models
         public double Height { get; set; }
         public double Weight { get; set; }
         public List<PokemonAbility> Abilities { get; set; }
+        public string Region { get; set; }
+        public string Generation { get; set; }
     }
 }

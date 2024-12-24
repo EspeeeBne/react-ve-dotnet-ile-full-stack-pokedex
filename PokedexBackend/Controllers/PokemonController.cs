@@ -108,5 +108,42 @@ namespace PokedexBackend.Controllers
                 return StatusCode(500, $"Error: {ex.Message}");
             }
         }
+
+        [HttpGet("filter/region/{regionId}")]
+        public async Task<IActionResult> GetPokemonByRegion(string regionId)
+        {
+            try
+            {
+                var pokemonByRegion = await _pokeApiService.GetPokemonByRegionAsync(regionId);
+                if (pokemonByRegion == null || !pokemonByRegion.Any())
+                {
+                    return NotFound($"No Pokémon found in region {regionId}.");
+                }
+                return Ok(pokemonByRegion);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("filter/generation/{generationId}")]
+        public async Task<IActionResult> GetPokemonByGeneration(string generationId)
+        {
+            try
+            {
+                var pokemonByGeneration = await _pokeApiService.GetPokemonByGenerationAsync(generationId);
+                if (pokemonByGeneration == null || !pokemonByGeneration.Any())
+                {
+                    return NotFound($"No Pokémon found in generation {generationId}.");
+                }
+                return Ok(pokemonByGeneration);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
     }
 }
