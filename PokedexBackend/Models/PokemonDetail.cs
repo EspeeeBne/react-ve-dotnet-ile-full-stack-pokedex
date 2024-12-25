@@ -13,5 +13,15 @@ namespace PokedexBackend.Models
         public List<PokemonAbility> Abilities { get; set; }
         public string Region { get; set; }
         public string Generation { get; set; }
+        public string GrowthRate { get; set; }
+        public GenderRate GenderRate { get; set; }
     }
+
+
+    public class GenderRate
+    {
+        public double MalePercentage { get; set; }
+        public double FemalePercentage { get; set; }
+    }
+
 }

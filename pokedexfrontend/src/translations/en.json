@@ -50,8 +50,8 @@
     "compare":"Compare",
     "selectSecondPokemon":"Select Second Pokémon",
     "selectFirstPokemon":"Select First Pokémon",
-    "and":"and",
-    "comparison":"comparison",
+    "and":"And",
+    "comparison":"Comparison",
     "filterByRegion": "Filter By Region",
     "filterByGeneration": "Filter By Generation",
     "kanto": "Kanto",
@@ -102,5 +102,13 @@
     "6": "Pokémon X/Y",
     "7": "Pokémon Sun/Moon",
     "8": "Pokémon Sword/Shield",
-    "9": "Pokémon Scarlet/Violet"
+    "9": "Pokémon Scarlet/Violet",
+    "slow": "Slow",
+    "medium-slow": "Medium Slow",
+    "medium-fast": "Medium Fast",
+    "medium":"Medium",
+    "fast": "Fast",
+    "fluctuating": "Fluctuating",
+    "erratic": "Erratic",
+    "growthRate.header": "Growth Rate"
 }

@@ -29,7 +29,7 @@ const PokemonDetail = () => {
   const theme = useTheme();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [pokemon, setPokemon] = useState(null);
   const [evolutionChain, setEvolutionChain] = useState([]);
 
@@ -70,6 +70,9 @@ const PokemonDetail = () => {
   const boxShadowColor = theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.2)';
   const wikiUrl = `https://pokemon.fandom.com/wiki/${pokemon.name}`;
 
+  const formatPercentage = (value) => {
+    return i18n.language === 'tr' ? `%${value}` : `${value}%`;
+  };
 
   return (
 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
@@ -120,6 +123,29 @@ const PokemonDetail = () => {
         <Typography variant="body1" style={{ color: textColor }}>
         {`${t('generation')}: ${t(pokemon.generation)}`}
       </Typography>
+      <Typography variant="body1" style={{ color: textColor }}>
+        {`${t('growthRate.header')}: ${t(pokemon.growthRate)}`}
+        </Typography>
+            <Box display="flex" flexDirection="row" gap="10px" marginTop="10px">
+              <Typography
+                variant="body1"
+                style={{
+                  fontWeight: 'bold',
+                  color: 'blue',
+                }}
+              >
+                {`♂️ ${formatPercentage(pokemon.genderRate.malePercentage)}`}
+              </Typography>
+              <Typography
+                variant="body1"
+                style={{
+                  fontWeight: 'bold',
+                  color: 'pink',
+                }}
+              >
+                {`♀️ ${formatPercentage(pokemon.genderRate.femalePercentage)}`}
+              </Typography>
+            </Box>
       </Box>
 
           <Box display="flex" justifyContent="center" marginTop="20px">

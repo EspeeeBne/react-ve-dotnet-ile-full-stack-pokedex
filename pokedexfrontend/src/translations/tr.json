@@ -50,8 +50,8 @@
     "compare":"Karşılaştır",
     "selectSecondPokemon":"İkinci Pokémonu seç",
     "selectFirstPokemon":"İlk Pokémonu seç",
-    "and":"ve",
-    "comparison":"karşılaştırması",
+    "and":"Ve",
+    "comparison":"Karşılaştırması",
     "filterByRegion": "Bölgeye Göre Filtrele",
     "filterByGeneration": "Jenerasyona Göre Filtrele",
     "kanto": "Kanto",
@@ -102,5 +102,13 @@
     "6": "Pokémon X/Y",
     "7": "Pokémon Güneş/Ay",
     "8": "Pokémon Kılıç/Kalkan",
-    "9": "Pokémon Kızıl/Mor"
+    "9": "Pokémon Kızıl/Mor",
+    "slow": "Yavaş",
+    "medium-slow": "Orta Yavaş",
+    "medium-fast": "Orta Hızlı",
+    "medium":"Orta",
+    "fast": "Hızlı",
+    "fluctuating": "Dalgalı",
+    "erratic": "Düzensiz",
+    "growthRate.header": "Büyüme Hızı"
 }

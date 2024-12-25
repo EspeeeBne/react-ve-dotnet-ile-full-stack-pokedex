@@ -15,8 +15,10 @@
 - **Dinamik Arka Plan ve Yazı Renkleri**: Pokémon türlerine göre arka plan renkleri dinamik olarak değişir.
 - **Pokémon İstatistikleri**: HP, saldırı, savunma gibi Pokémon'un temel istatistiklerini şık bir şekilde görüntüleyebilirsiniz.
 - **Pokémon Skilleri**: Pokémon'un kullanabildiği skill'ler ve bu skill'lere tıklayarak detaylı anlatımıyla bu skill'i kullanan başka pokémonlara bakabilme.
-- **Pokémon Karşılaştırma**: İki Pokémon'un istatistiklerini **radar grafik** üzerinden karşılaştırarak analiz yapabilirsiniz ek olarak pokémon'lara da erişebiliyorsunuz o menüden.
-- **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik ateş türündeki pokémon mu yoksa elektrik mi seçip hepsini görebilme.
+- **Pokémon Karşılaştırma**: İki Pokémon'un istatistiklerini **radar grafik** üzerinden karşılaştırarak analiz yapabilirsiniz, ek olarak Pokémon'lara da erişebiliyorsunuz o menüden.
+- **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik; ateş türündeki Pokémon mu yoksa elektrik mi, seçip hepsini görebilme.
+- **GrowthRate ve Cinsiyet Oranları**: Pokémon detay sayfasında **growthRate (yetişme hızı)** bilgisi ve **cinsiyet oranları (% Erkek / % Dişi)** görüntülenebilir. Dil seçeneğine göre % ambleminin yeri değişir. Cinsiyet oranları renkli ikonlarla gösterilir (Mavi: Erkek, Pembe: Dişi).
+
 ---
 
 ## 🔧 Teknolojiler
@@ -138,7 +140,10 @@ Açıklama: Pokémon'ları türlerine göre filtreleme.
 - **Pokémon Evrim Ağacı**: Pokémon'ların neye evrimleşebildiğini görebilme.
 - **Pokémon'ları Karşılaştırma**: Pokémonları örümcek grafik ve normal görünüm ile karşılaştırma.
 - **Bulundukları Bölgeye Göre Filtreleme**: Pokémon'ları bulundukları bölgelere göre filtreleyebilme.
-- **Seriye göre filtreleme**: Pokémon'ları seriye göre filtreleme.
+- **Seriye Göre Filtreleme**: Pokémon'ları seriye göre filtreleme.
+- **Cinsiyet Oranı Görüntüleme**: Her Pokémon'un cinsiyet oranlarını (♂ %50 / ♀ %50) emoji ve renk kodlarıyla görüntüleme.
+- **Büyüme Oranı Görüntüleme**: Her Pokémon'un büyüme hızını ("Yavaş", "Orta," "Hızlı", vb.) detay sayfasında görebilme.
+
 
 
 ---

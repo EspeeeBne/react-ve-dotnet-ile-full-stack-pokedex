@@ -30,7 +30,7 @@ const PokemonCompare = () => {
   const { id1, id2 } = useParams();
   const theme = useTheme();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [pokemon1, setPokemon1] = useState(null);
   const [pokemon2, setPokemon2] = useState(null);
   const [evolution1, setEvolution1] = useState([]);
@@ -66,6 +66,10 @@ const PokemonCompare = () => {
     const textColor = theme.palette.text.primary;
     const wikiUrl = `https://pokemon.fandom.com/wiki/${pokemon.name}`;
 
+    const formatPercentage = (value) => {
+      return i18n.language === 'tr' ? `%${value}` : `${value}%`;
+    };
+
     return (
       <Card
         style={{
@@ -97,6 +101,29 @@ const PokemonCompare = () => {
             <Typography style={{ color: textColor }}>{`${t('weight')}: ${pokemon.weight} kg`}</Typography>
             <Typography style={{ color: textColor }}>{`${t('region')}: ${t(pokemon.region)}`}</Typography>
             <Typography style={{ color: textColor }}>{`${t('generation')}: ${t(pokemon.generation)}`}</Typography>
+                  <Typography variant="body1" style={{ color: textColor }}>
+                    {`${t('growthRate.header')}: ${t(pokemon.growthRate)}`}
+                    </Typography>
+                        <Box display="flex" flexDirection="row" gap="10px" marginTop="10px">
+                          <Typography
+                            variant="body1"
+                            style={{
+                              fontWeight: 'bold',
+                              color: 'blue',
+                            }}
+                          >
+                            {`♂️ ${formatPercentage(pokemon.genderRate.malePercentage)}`}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            style={{
+                              fontWeight: 'bold',
+                              color: 'pink',
+                            }}
+                          >
+                            {`♀️ ${formatPercentage(pokemon.genderRate.femalePercentage)}`}
+                          </Typography>
+                        </Box>
   </Box>
 
           <Box display="flex" justifyContent="center" marginTop="20px">

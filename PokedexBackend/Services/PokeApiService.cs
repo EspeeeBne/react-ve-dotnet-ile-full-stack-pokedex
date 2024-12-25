@@ -31,6 +31,10 @@ namespace PokedexBackend.Services
 
             var generation = speciesData["generation"]?["name"]?.ToString() ?? "Unknown";
             var region = GetRegionFromGeneration(generation) ?? "Unknown";
+            var growthRate = speciesData["growth_rate"]?["name"]?.ToString() ?? "Unknown";
+
+            var genderRate = speciesData["gender_rate"]?.ToObject<int>() ?? -1;
+            GenderRate genderInfo = CalculateGenderRate(genderRate);
 
             var types = data["types"]?.Select(t => t["type"]["name"]?.ToString()).ToList() ?? new List<string> { "Unknown" };
             var stats = data["stats"]
@@ -55,7 +59,24 @@ namespace PokedexBackend.Services
                 Weight = (data["weight"]?.ToObject<double>() ?? 0.0) / 10,
                 Abilities = abilities,
                 Generation = generation,
-                Region = region
+                Region = region,
+                GrowthRate = growthRate,
+                GenderRate = genderInfo
+            };
+        }
+
+        private GenderRate CalculateGenderRate(int genderRate)
+        {
+            if (genderRate == -1)
+                return new GenderRate { MalePercentage = 0, FemalePercentage = 0 };
+
+            double femalePercentage = (genderRate / 8.0) * 100;
+            double malePercentage = 100 - femalePercentage;
+
+            return new GenderRate
+            {
+                MalePercentage = malePercentage,
+                FemalePercentage = femalePercentage
             };
         }
 
