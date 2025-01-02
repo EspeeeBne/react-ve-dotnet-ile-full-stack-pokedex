@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
-import { Typography, Card, CardContent, Box, Grid, CircularProgress, Button, useTheme } from '@mui/material';
+import { Typography, Card, CardContent, Box, Grid2, CircularProgress, Button, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PokemonStatChart from '../components/PokemonStatChart';
@@ -158,9 +158,9 @@ const PokemonCompare = () => {
       >
         {t('abilities')}
       </Typography>
-      <Grid container spacing={2} style={{ marginTop: '10px' }}>
+      <Grid2 container spacing={2} style={{ marginTop: '10px' }}>
         {pokemon.abilities.map((ability, index) => (
-          <Grid item xs={12} sm={6} key={index}>
+          <Grid2 xs={12} sm={6} key={index}>
             <Button
               variant="contained"
               fullWidth
@@ -176,9 +176,9 @@ const PokemonCompare = () => {
             >
               {t(ability.name)} ({ability.isHidden ? t('hiddenAbility') : t('regularAbility')})
             </Button>
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
 
               <Typography
           variant="h6"

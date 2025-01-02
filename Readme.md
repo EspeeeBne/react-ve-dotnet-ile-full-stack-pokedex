@@ -18,7 +18,7 @@
 - **Pokémon Karşılaştırma**: İki Pokémon'un istatistiklerini **radar grafik** üzerinden karşılaştırarak analiz yapabilirsiniz, ek olarak Pokémon'lara da erişebiliyorsunuz o menüden.
 - **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik; ateş türündeki Pokémon mu yoksa elektrik mi, seçip hepsini görebilme.
 - **GrowthRate ve Cinsiyet Oranları**: Pokémon detay sayfasında **growthRate (yetişme hızı)** bilgisi ve **cinsiyet oranları (% Erkek / % Dişi)** görüntülenebilir. Dil seçeneğine göre % ambleminin yeri değişir. Cinsiyet oranları renkli ikonlarla gösterilir (Mavi: Erkek, Pembe: Dişi).
-- **404 Sayfası**: Eğer kullanıcı hatalı bir yere giderse 404 sayfasına yönlendiriliyor otomatik.
+- **404 Sayfası**: Eğer kullanıcı hatalı bir yere giderse **404** sayfasına yönlendiriliyor otomatik.
 - **Suspense Fallback**: Back-end tabanlı yavaş yüklenmelerde **Yükleniyor** tekeri döndüren sistem.
 
 ---
@@ -27,9 +27,10 @@
 
 ### Front-end:
 - **React.js**: Kullanıcı arayüzü oluşturmak için.
+- **React-Router**: React tabanlı uygulamalar için istemci tarafı yönlendirme (routing) kütüphanesidir. Sayfalar arasında geçiş yapmayı sağlar.
+- **React-Router-Dom**: Web uygulamalarında tarayıcı tabanlı yönlendirme işlemleri için React-Router'ın bir uzantısıdır. `<BrowserRouter>` ve `<Route>` gibi bileşenleri içerir.
 - **Material-UI (MUI)**: Uygulamanın stil ve tasarım bileşenleri için.
 - **Axios**: API isteklerini yönetmek için.
-- **React Router**: Sayfalar arası gezinme işlevselliği için.
 - **Framer Motion**: Dinamik animasyonlar ve geçiş efektleri için.
 - **i18next**: Çoklu dil desteğini entegre etmek için.
 - **Chart.js**: Pokemon istatistiklerini görselleştirmek için bar grafik desteği.
@@ -178,8 +179,3 @@ Bu proje **MIT** lisansı ile lisanslanmıştır. Daha fazla bilgi için [LİSAN
 Proje tasarımında kullanılan görseller, PokeAPI ve Pokémon SVG tarafından sağlanmıştır.
 
 "Pokémon" tüm haklarıyla Pokémon Company ve Game Freak'in mülküdür. Bu proje tamamen eğitim ve kendini geliştirme amaçlıdır sizde lütfen kullanırsanız ona göre kullanın.
-
-
-
-
-

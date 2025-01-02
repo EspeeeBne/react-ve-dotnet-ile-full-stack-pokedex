@@ -1,7 +1,8 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
@@ -26,7 +27,7 @@ const App = () => {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Router>
+      <BrowserRouter>
         <Navbar toggleTheme={toggleTheme} darkMode={darkMode} />
         <Suspense fallback={<Loading size={60} disableShrink={true} />}>
           <Routes>
@@ -52,7 +53,7 @@ const App = () => {
         >
           {t('createdBy')}
         </footer>
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

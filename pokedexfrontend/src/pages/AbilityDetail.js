@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
-import { Typography, Box, Grid, CircularProgress, Card, CardContent } from '@mui/material';
+import { Typography, Box, Grid2, CircularProgress, Card, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
@@ -102,13 +102,13 @@ const AbilityDetail = () => {
         <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', marginBottom: 2 }}>
           {t('pokemonWithAbility')}:
         </Typography>
-        <Grid container spacing={2} justifyContent="center">
+        <Grid2 container spacing={2} justifyContent="center">
           {ability.pokemon.map((pokemon, index) => {
             const backgroundColor = typeColors[pokemon.type] || theme.palette.action.selected;
             const textColor = theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black;
 
             return (
-              <Grid item xs={6} sm={4} md={3} key={index}>
+              <Grid2 xs={6} sm={4} md={3} key={index}>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
@@ -140,10 +140,10 @@ const AbilityDetail = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Grid2>
             );
           })}
-        </Grid>
+        </Grid2>
       </Box>
     </motion.div>
   );
