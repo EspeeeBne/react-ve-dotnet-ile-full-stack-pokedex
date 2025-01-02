@@ -60,6 +60,7 @@ Back-end'i çalıştırın:
 PokedexBackend klasörüne gidin
 
 Projeyi derleyin ve çalıştırın:
+
    ```
 dotnet build
    ```
@@ -79,12 +80,18 @@ Front-end klasörüne gidin
 
 Gerekli bağımlılıkları yükleyin:
 
-   ```
+    ```
  npm install --legacy-peer-deps
     ```
 
 **--legacy-peer-deps** deme sebebimiz react 19 almamış paketler hâlâ react 18'i kabul gördüğünden hata verdirtiyor.
 
+**.env Dosyasını Ayarlayın:**
+
+    ```
+cp .env.example .env
+    ```
+**Not:** REACT_APP_API_BASE_URL ortam değişkenini backend URL'inize göre ayarlayın (varsayılan: http://localhost:5145).
 
 Front-end'i başlatın:
 
