@@ -19,7 +19,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchIcon from '@mui/icons-material/Search';
 import TranslateIcon from '@mui/icons-material/Translate';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
