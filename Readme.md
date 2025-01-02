@@ -93,7 +93,7 @@ Gerekli bağımlılıkları yükleyin:
 **.env Dosyasını Ayarlayın:**
 
    ```
-cp .env.example .env
+cp env.example .env
    ```
 
 **Not:** REACT_APP_API_BASE_URL ortam değişkenini backend URL'inize göre ayarlayın (varsayılan: http://localhost:5145).
