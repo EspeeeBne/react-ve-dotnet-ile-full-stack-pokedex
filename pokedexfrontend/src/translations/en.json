@@ -1,6 +1,13 @@
 {
+    "404": {
+        "header_text": "We could not find the page you are looking for, it may have been removed.",
+        "subtitle_text": "You will be redirected to the homepage in 10 seconds."
+    },
     "type": "Type",
     "height": "Height",
+    "changeLanguage": "Change Language",
+    "selectLanguage": "Select a language",
+    "change": "Change",
     "weight": "Weight",
     "grass": "Grass",
     "fire": "Fire",

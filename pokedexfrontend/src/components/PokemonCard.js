@@ -9,7 +9,7 @@ const typeColors = {
   water: '#6890F0',
   poison: '#A040A0',
   electric: '#F8D030',
-  bug: '#8B8B56',
+  bug: '#A8B820',
   normal: '#A8A878',
   fairy: '#EE99AC',
   ground: '#E0C068',
@@ -20,6 +20,7 @@ const typeColors = {
   steel: '#B8B8D0',
   dragon: '#7038F8',
   dark: '#705848',
+  ice: '#98D8D8',
 };
 
 const PokemonCard = ({ pokemon }) => {

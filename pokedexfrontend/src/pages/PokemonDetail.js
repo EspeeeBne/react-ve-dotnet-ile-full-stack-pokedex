@@ -6,13 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PokemonStatChart from '../components/PokemonStatChart';
 
+
+const API_URL = process.env.REACT_APP_API_BASE_URL;
+
 const typeColors = {
   grass: '#78C850',
   fire: '#F08030',
   water: '#6890F0',
   poison: '#A040A0',
   electric: '#F8D030',
-  bug: '#8B8B56',
+  bug: '#A8B820',
   normal: '#A8A878',
   fairy: '#EE99AC',
   ground: '#E0C068',
@@ -23,6 +26,7 @@ const typeColors = {
   steel: '#B8B8D0',
   dragon: '#7038F8',
   dark: '#705848',
+  ice: '#98D8D8',
 };
 
 const PokemonDetail = () => {
@@ -36,7 +40,7 @@ const PokemonDetail = () => {
   useEffect(() => {
     const fetchPokemon = async () => {
       try {
-        const response = await axios.get(`http://localhost:5145/api/pokemon/${id}`);
+        const response = await axios.get(`${API_URL}/api/pokemon/${id}`);
         setPokemon(response.data);
       } catch (error) {
         console.error('Error fetching Pokemon details:', error);
@@ -45,7 +49,7 @@ const PokemonDetail = () => {
 
     const fetchEvolutionChain = async () => {
       try {
-        const response = await axios.get(`http://localhost:5145/api/pokemon/evolution/${id}`);
+        const response = await axios.get(`${API_URL}/api/pokemon/evolution/${id}`);
         setEvolutionChain(response.data);
       } catch (error) {
         console.error('Error fetching evolution chain:', error);
