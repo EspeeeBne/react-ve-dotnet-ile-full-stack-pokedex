@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
 
+const API_URL = process.env.REACT_APP_API_BASE_URL;
+
 const typeColors = {
   grass: '#78C850',
   fire: '#F08030',
@@ -37,7 +39,7 @@ const AbilityDetail = () => {
   useEffect(() => {
     const fetchAbility = async () => {
       try {
-        const response = await axios.get(`http://localhost:5145/api/pokemon/ability/${id}`);
+        const response = await axios.get(`${API_URL}/api/pokemon/ability/${id}`);
         const updatedPokemon = response.data.pokemon.map((pokemon) => ({
           ...pokemon,
           type: pokemon.type || 'normal',
@@ -56,7 +58,7 @@ const AbilityDetail = () => {
 
   if (loading)
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+      <Box display="flex" justifyContent="center" alignItems="center" sx={{ height: '100vh' }}>
         <CircularProgress />
       </Box>
     );
@@ -71,39 +73,39 @@ const AbilityDetail = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
       <Box
-        style={{
+        sx={{
           maxWidth: '900px',
           margin: '40px auto',
           padding: '20px',
           backgroundColor: theme.palette.background.paper,
           color: theme.palette.text.primary,
-          borderRadius: '15px',
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+          borderRadius: 2,
+          boxShadow: theme.shadows[3],
         }}
       >
-        <Typography variant="h4" style={{ fontWeight: 'bold', textAlign: 'center', textTransform: 'capitalize' }}>
+        <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center', textTransform: 'capitalize' }}>
           {t('abilityName')}: {ability.name}
         </Typography>
 
         <Box marginTop={3} marginBottom={3}>
           <Typography
             variant="body1"
-            style={{ marginBottom: '10px', fontStyle: 'italic', color: theme.palette.text.secondary }}
+            sx={{ marginBottom: 1, fontStyle: 'italic', color: theme.palette.text.secondary }}
           >
             {t('abilityEffect')}:
           </Typography>
-          <Typography variant="body1" style={{ lineHeight: 1.6, textAlign: 'center' }}>
+          <Typography variant="body1" sx={{ lineHeight: 1.6, textAlign: 'center' }}>
             {ability.effect}
           </Typography>
         </Box>
 
-        <Typography variant="h6" style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '20px' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', marginBottom: 2 }}>
           {t('pokemonWithAbility')}:
         </Typography>
         <Grid container spacing={2} justifyContent="center">
           {ability.pokemon.map((pokemon, index) => {
-            const backgroundColor = typeColors[pokemon.type] || '#A8A878';
-            const textColor = theme.palette.mode === 'dark' ? '#fff' : '#333';
+            const backgroundColor = typeColors[pokemon.type] || theme.palette.action.selected;
+            const textColor = theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black;
 
             return (
               <Grid item xs={6} sm={4} md={3} key={index}>
@@ -113,12 +115,12 @@ const AbilityDetail = () => {
                   onClick={() => navigate(`/pokemon/${pokemon.id}`)}
                 >
                   <Card
-                    style={{
+                    sx={{
                       cursor: 'pointer',
                       textAlign: 'center',
-                      borderRadius: '10px',
-                      boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
-                      padding: '10px',
+                      borderRadius: 1,
+                      boxShadow: theme.shadows[2],
+                      padding: 2,
                       backgroundColor: backgroundColor,
                       color: textColor,
                     }}
@@ -131,7 +133,7 @@ const AbilityDetail = () => {
                     <CardContent>
                       <Typography
                         variant="body1"
-                        style={{ textTransform: 'capitalize', fontWeight: 'bold' }}
+                        sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}
                       >
                         {pokemon.name}
                       </Typography>

@@ -1,8 +1,9 @@
 {
   "name": "pokedexfront",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "Creator": "EspeeeBne",
-  "private": true,
+  "private": false,
+  "license": "MIT",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -14,6 +15,7 @@
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "framer-motion": "^11.15.0",
     "i18next": "^24.1.2",
     "install": "^0.13.0",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PokemonCard from '../components/PokemonCard';
@@ -33,11 +33,12 @@ const Home = () => {
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedGeneration, setSelectedGeneration] = useState('');
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const fetchPokemonByRegion = async (region) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5145/api/pokemon/filter/region/${region}`);
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/region/${region}`);
       setPokemonList(response.data);
     } catch (error) {
       console.error('Error fetching Pokémon by region:', error);
@@ -50,7 +51,7 @@ const Home = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5145/api/pokemon/filter/generation/${generation}`
+        `${API_BASE_URL}/api/pokemon/filter/generation/${generation}`
       );
       setPokemonList(response.data);
     } catch (error) {
@@ -60,20 +61,20 @@ const Home = () => {
     }
   };
 
-  const fetchPokemonList = async () => {
+  const fetchPokemonList = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5145/api/pokemon/all/details');
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/all/details`);
       setPokemonList(response.data);
       setHasMore(false);
     } catch (error) {
       console.error('API Error:', error);
     }
-  };
+  }, [API_BASE_URL]);
 
   const fetchPokemonByType = async (type) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5145/api/pokemon/filter/type/${type}`);
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/type/${type}`);
       setPokemonList(response.data);
     } catch (error) {
       console.error('Error fetching Pokémon by type:', error);
@@ -84,8 +85,8 @@ const Home = () => {
 
   useEffect(() => {
     fetchPokemonList();
-  }, []);
-
+  }, [fetchPokemonList]);
+  
   const generationMapping = {
     i: 1,
     ii: 2,
@@ -107,7 +108,6 @@ const Home = () => {
       fetchPokemonList();
     }
   };
-
 
   const handleGenerationChange = (event) => {
     const generation = event.target.value;
@@ -208,84 +208,82 @@ const Home = () => {
           </Select>
         </Box>
 
+        <Box display="flex" alignItems="center" gap="10px">
+          <Typography
+            variant="h6"
+            style={{
+              color: theme.palette.text.primary,
+              fontWeight: 'bold',
+            }}
+          >
+            {t('filterByRegion')}:
+          </Typography>
+          <Select
+            value={selectedRegion}
+            onChange={handleRegionChange}
+            displayEmpty
+            style={{
+              minWidth: 150,
+              height: 40,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: theme.shape.borderRadius,
+              color: theme.palette.text.primary,
+              boxShadow: theme.shadows[2],
+            }}
+          >
+            <MenuItem value="">
+              <em>{t('all')}</em>
+            </MenuItem>
+            <MenuItem value="kanto">{t('kanto')}</MenuItem>
+            <MenuItem value="johto">{t('johto')}</MenuItem>
+            <MenuItem value="hoenn">{t('hoenn')}</MenuItem>
+            <MenuItem value="sinnoh">{t('sinnoh')}</MenuItem>
+            <MenuItem value="unova">{t('unova')}</MenuItem>
+            <MenuItem value="kalos">{t('kalos')}</MenuItem>
+            <MenuItem value="alola">{t('alola')}</MenuItem>
+            <MenuItem value="galar">{t('galar')}</MenuItem>
+            <MenuItem value="paldea">{t('paldea')}</MenuItem>
+          </Select>
+        </Box>
 
-  <Box display="flex" alignItems="center" gap="10px">
-    <Typography
-      variant="h6"
-      style={{
-        color: theme.palette.text.primary,
-        fontWeight: 'bold',
-      }}
-    >
-      {t('filterByRegion')}:
-    </Typography>
-    <Select
-      value={selectedRegion}
-      onChange={handleRegionChange}
-      displayEmpty
-      style={{
-        minWidth: 150,
-        height: 40,
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
-        color: theme.palette.text.primary,
-        boxShadow: theme.shadows[2],
-      }}
-    >
-      <MenuItem value="">
-        <em>{t('all')}</em>
-      </MenuItem>
-      <MenuItem value="kanto">{t('kanto')}</MenuItem>
-      <MenuItem value="johto">{t('johto')}</MenuItem>
-      <MenuItem value="hoenn">{t('hoenn')}</MenuItem>
-      <MenuItem value="sinnoh">{t('sinnoh')}</MenuItem>
-      <MenuItem value="unova">{t('unova')}</MenuItem>
-      <MenuItem value="kalos">{t('kalos')}</MenuItem>
-      <MenuItem value="alola">{t('alola')}</MenuItem>
-      <MenuItem value="galar">{t('galar')}</MenuItem>
-      <MenuItem value="paldea">{t('paldea')}</MenuItem>
-    </Select>
-  </Box>
-
-
-  <Box display="flex" alignItems="center" gap="10px">
-    <Typography
-      variant="h6"
-      style={{
-        color: theme.palette.text.primary,
-        fontWeight: 'bold',
-      }}
-    >
-      {t('filterByGeneration')}:
-    </Typography>
-    <Select
-      value={selectedGeneration}
-      onChange={handleGenerationChange}
-      displayEmpty
-      style={{
-        minWidth: 150,
-        height: 40,
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
-        color: theme.palette.text.primary,
-        boxShadow: theme.shadows[2],
-      }}
-    >
-      <MenuItem value="">
-        <em>{t('all')}</em>
-      </MenuItem>
-      <MenuItem value="i">{t('generation1')}</MenuItem>
-      <MenuItem value="ii">{t('generation2')}</MenuItem>
-      <MenuItem value="iii">{t('generation3')}</MenuItem>
-      <MenuItem value="iv">{t('generation4')}</MenuItem>
-      <MenuItem value="v">{t('generation5')}</MenuItem>
-      <MenuItem value="vi">{t('generation6')}</MenuItem>
-      <MenuItem value="vii">{t('generation7')}</MenuItem>
-      <MenuItem value="viii">{t('generation8')}</MenuItem>
-      <MenuItem value="ix">{t('generation9')}</MenuItem>
-    </Select>
-  </Box>
-  </Box>
+        <Box display="flex" alignItems="center" gap="10px">
+          <Typography
+            variant="h6"
+            style={{
+              color: theme.palette.text.primary,
+              fontWeight: 'bold',
+            }}
+          >
+            {t('filterByGeneration')}:
+          </Typography>
+          <Select
+            value={selectedGeneration}
+            onChange={handleGenerationChange}
+            displayEmpty
+            style={{
+              minWidth: 150,
+              height: 40,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: theme.shape.borderRadius,
+              color: theme.palette.text.primary,
+              boxShadow: theme.shadows[2],
+            }}
+          >
+            <MenuItem value="">
+              <em>{t('all')}</em>
+            </MenuItem>
+            <MenuItem value="i">{t('generation1')}</MenuItem>
+            <MenuItem value="ii">{t('generation2')}</MenuItem>
+            <MenuItem value="iii">{t('generation3')}</MenuItem>
+            <MenuItem value="iv">{t('generation4')}</MenuItem>
+            <MenuItem value="v">{t('generation5')}</MenuItem>
+            <MenuItem value="vi">{t('generation6')}</MenuItem>
+            <MenuItem value="vii">{t('generation7')}</MenuItem>
+            <MenuItem value="viii">{t('generation8')}</MenuItem>
+            <MenuItem value="ix">{t('generation9')}</MenuItem>
+          </Select>
+        </Box>
+      </Box>
 
       <Drawer anchor="left" open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <Box

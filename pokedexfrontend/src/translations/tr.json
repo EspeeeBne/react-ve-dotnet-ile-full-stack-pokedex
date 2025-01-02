@@ -1,7 +1,14 @@
 {
+    "404": {
+        "header_text": "Aradığınız sayfayı bulamadık, kaldırılmış olabilir.",
+        "subtitle_text": "10 saniye içinde ana sayfaya yönlendirileceksiniz."
+    },
     "type": "Tür",
     "height": "Boy",
     "weight": "Ağırlık",
+    "selectLanguage": "Bir dil seçin",
+    "changeLanguage": "Dili Değiştir",
+    "change": "Değiştir",
     "grass": "Çim",
     "fire": "Ateş",
     "water": "Su",

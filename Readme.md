@@ -18,6 +18,8 @@
 - **Pokémon Karşılaştırma**: İki Pokémon'un istatistiklerini **radar grafik** üzerinden karşılaştırarak analiz yapabilirsiniz, ek olarak Pokémon'lara da erişebiliyorsunuz o menüden.
 - **Pokémon Türünü Filtreleyerek Arama**: Pokémon'ları filtreleyerek aramanızı sağlayan bir özellik; ateş türündeki Pokémon mu yoksa elektrik mi, seçip hepsini görebilme.
 - **GrowthRate ve Cinsiyet Oranları**: Pokémon detay sayfasında **growthRate (yetişme hızı)** bilgisi ve **cinsiyet oranları (% Erkek / % Dişi)** görüntülenebilir. Dil seçeneğine göre % ambleminin yeri değişir. Cinsiyet oranları renkli ikonlarla gösterilir (Mavi: Erkek, Pembe: Dişi).
+- **404 Sayfası**: Eğer kullanıcı hatalı bir yere giderse 404 sayfasına yönlendiriliyor otomatik.
+- **Suspense Fallback**: Back-end tabanlı yavaş yüklenmelerde **Yükleniyor** tekeri döndüren sistem.
 
 ---
 
@@ -31,6 +33,7 @@
 - **Framer Motion**: Dinamik animasyonlar ve geçiş efektleri için.
 - **i18next**: Çoklu dil desteğini entegre etmek için.
 - **Chart.js**: Pokemon istatistiklerini görselleştirmek için bar grafik desteği.
+- **dotenv**: Api portu farklı olursa kullanıcı mağdur olmasın.
 
 ### Back-end:
 - **.NET 9.0**: Back-end.
@@ -48,19 +51,27 @@
 
 2. **Projeyi Klonlayın**:
 
+   ```
    git clone https://github.com/EspeeeBne/react-ve-dotnet-ile-full-stack-pokedex.git
+   ```
 
 Back-end'i çalıştırın:
 
 PokedexBackend klasörüne gidin
 
 Projeyi derleyin ve çalıştırın:
+   ```
 dotnet build
+   ```
+
+   ```
 dotnet run
+   ```
+
 back-end şu URL'den çalışacaktır: http://localhost:5145
 
 Front-end Kurulumu (React)
-Node.js'i yükleyin: Eğer yüklü değilse, Node.js Resmi Web Sitesi üzerinden Node.js'i indirip yükleyin.
+Node.js'i yükleyin: Eğer yüklü değilse, [Resmi Node.js İndirme Sayfası](https://nodejs.org/en/download/current) üzerinden Node.js'i indirip yükleyin. Bence LTS indirin ileride de kullanırsınız rahatça.
 
 Front-end'i çalıştırın:
 
@@ -68,24 +79,21 @@ Front-end klasörüne gidin
 
 Gerekli bağımlılıkları yükleyin:
 
+   ```
+ npm install --legacy-peer-deps
+    ```
 
- npm install --legacy-peer-deps   (böyle yüklememizin sebebi react 19 almamış bazı paketler hata veriyor)
+**--legacy-peer-deps** deme sebebimiz react 19 almamış paketler hâlâ react 18'i kabul gördüğünden hata verdirtiyor.
 
 
 Front-end'i başlatın:
 
+    ```
 npm start
+    ```
 
 React Uygulaması şu URL'den çalışacaktır (muhtemelen): http://localhost:3000
 
----
-
-## 🎮 Kullanım
-## Uygulama Açıldıktan Sonra:
-Uygulama açıldığında, ana sayfada Pokémon'lar listelenir. Pokémon'a tıklayarak detaylarına ulaşabilirsiniz (internet hızınıza göre yavaş yüklenebilir pokeapi'den alıyor yerel bir yerden almıyor).
-Pokémon arama kutusunu kullanarak Pokémon ismi veya ID'si ile arama yapabilirsiniz.
-Tema geçişi yapmak için, sağ üstteki tema değişim butonuna tıklayarak karanlık ve aydınlık temalar arasında geçiş yapabilirsiniz.
-Dil seçeneğini değiştirmek için, sağ üstteki bayrak ikonlarından birine tıklayarak dil değiştirebilirsiniz.
 
 ---
 
@@ -143,13 +151,14 @@ Açıklama: Pokémon'ları türlerine göre filtreleme.
 - **Seriye Göre Filtreleme**: Pokémon'ları seriye göre filtreleme.
 - **Cinsiyet Oranı Görüntüleme**: Her Pokémon'un cinsiyet oranlarını (♂ %50 / ♀ %50) emoji ve renk kodlarıyla görüntüleme.
 - **Büyüme Oranı Görüntüleme**: Her Pokémon'un büyüme hızını ("Yavaş", "Orta," "Hızlı", vb.) detay sayfasında görebilme.
+- **Responsive Tasarım**: Gerek Mui gerek framer-motion gerek mobile göre Navbar'ın farklı gözükmesi olsun aşırı responsive bir proje.
 
 
 
 ---
 
 ## 📄 Lisans
-Bu proje, MIT Lisansı altında lisanslanmıştır.
+Bu proje **MIT** lisansı ile lisanslanmıştır. Daha fazla bilgi için [LİSANS](./LICENSE) dosyasını inceleyebilirsiniz.
 
 ---
 
