@@ -5,5 +5,6 @@ namespace PokedexBackend.Models
         public string Name { get; set; }
         public string Effect { get; set; }
         public List<PokemonBasic> Pokemon { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }

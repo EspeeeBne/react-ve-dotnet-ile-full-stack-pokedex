@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using PokedexBackend.Services;
 using PokedexBackend.Models;
+using System;
 
 namespace PokedexBackend.Controllers
 {
@@ -20,42 +21,75 @@ namespace PokedexBackend.Controllers
             _pokeApiService = pokeApiService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("refresh-cache")]
+        public async Task<IActionResult> RefreshCache()
+        {
+            try
+            {
+                await _pokeApiService.UpdateCacheAsync();
+                return Ok(new { Message = "Cache successfully updated." });
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, new { Error = $"Error updating cache: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetPokemon(int id)
         {
             try
             {
                 var pokemon = await _pokeApiService.GetPokemonAsync(id);
-                return Ok(pokemon);
+                if (pokemon != null)
+                {
+                    return Ok(pokemon);
+                }
+                else
+                {
+                    return NotFound(new { Message = "Pokémon bulunamadý." });
+                }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
         [HttpGet("search/{name}")]
         public async Task<IActionResult> SearchPokemonByName(string name)
         {
-            var pokemon = await _pokeApiService.SearchPokemonByNameAsync(name);
-            if (pokemon == null || !pokemon.Any())
-            {
-                return NotFound("Pokemon not found");
-            }
-            return Ok(pokemon);
-        }
-
-        [HttpGet("all/details")]
-        public async Task<IActionResult> GetAllPokemonDetails()
-        {
             try
             {
-                var allPokemonDetails = await _pokeApiService.GetAllPokemonDetailsAsync();
-                return Ok(allPokemonDetails);
+                var pokemon = await _pokeApiService.SearchPokemonByNameAsync(name);
+                if (pokemon == null)
+                {
+                    return NotFound(new { Message = "Pokémon bulunamadý." });
+                }
+                return Ok(pokemon);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPaginatedPokemon([FromQuery] int page = 1, [FromQuery] int limit = 20)
+        {
+            if (page < 1 || limit < 1)
+            {
+                return BadRequest(new { Message = "Page ve limit deðerleri 1'den küçük olamaz." });
+            }
+
+            try
+            {
+                var paginatedData = await _pokeApiService.GetPaginatedPokemonDetailsAsync(page, limit);
+                return Ok(paginatedData);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
@@ -67,13 +101,13 @@ namespace PokedexBackend.Controllers
                 var abilityDetails = await _pokeApiService.GetAbilityDetailsAsync(abilityId);
                 if (abilityDetails == null)
                 {
-                    return NotFound("Ability not found");
+                    return NotFound(new { Message = "Yetenek bulunamadý." });
                 }
                 return Ok(abilityDetails);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
@@ -85,13 +119,13 @@ namespace PokedexBackend.Controllers
                 var evolutionChain = await _pokeApiService.GetEvolutionChainAsync(id);
                 if (evolutionChain == null || !evolutionChain.Any())
                 {
-                    return NotFound("No evolution data available");
+                    return NotFound(new { Message = "Evrim verisi mevcut deðil." });
                 }
                 return Ok(evolutionChain);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
@@ -105,7 +139,7 @@ namespace PokedexBackend.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
@@ -117,13 +151,13 @@ namespace PokedexBackend.Controllers
                 var pokemonByRegion = await _pokeApiService.GetPokemonByRegionAsync(regionId);
                 if (pokemonByRegion == null || !pokemonByRegion.Any())
                 {
-                    return NotFound($"No Pokémon found in region {regionId}.");
+                    return NotFound(new { Message = $"Bölgede ({regionId}) Pokémon bulunamadý." });
                 }
                 return Ok(pokemonByRegion);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
@@ -135,15 +169,28 @@ namespace PokedexBackend.Controllers
                 var pokemonByGeneration = await _pokeApiService.GetPokemonByGenerationAsync(generationId);
                 if (pokemonByGeneration == null || !pokemonByGeneration.Any())
                 {
-                    return NotFound($"No Pokémon found in generation {generationId}.");
+                    return NotFound(new { Message = $"Nesilde ({generationId}) Pokémon bulunamadý." });
                 }
                 return Ok(pokemonByGeneration);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new { Error = $"Hata: {ex.Message}" });
             }
         }
 
+        [HttpPost("cache/update")]
+        public async Task<IActionResult> UpdateCache()
+        {
+            try
+            {
+                await _pokeApiService.UpdateCacheAsync();
+                return Ok(new { Message = "Önbellek baþarýyla güncellendi." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = $"Önbellek güncellenirken hata oluþtu: {ex.Message}" });
+            }
+        }
     }
 }

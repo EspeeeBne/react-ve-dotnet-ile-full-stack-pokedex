@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { motion } from 'framer-motion';
 
 const typeColors = {
   grass: '#78C850',
@@ -30,41 +31,58 @@ const PokemonCard = ({ pokemon }) => {
 
   return (
     <Link to={`/pokemon/${pokemon.id}`} style={{ textDecoration: 'none' }}>
-      <Card
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         style={{
-          backgroundColor: typeColors[pokemon.types[0]] || '#FFF',
-          color: '#000',
           width: 200,
           margin: 10,
           borderRadius: 10,
-          textAlign: 'center',
+          overflow: 'hidden',
         }}
       >
-        <CardContent>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <img
-              src={pokemon.imageUrl}
-              alt={pokemon.name}
-              style={{ width: '100px', height: '100px' }}
-            />
-            <Typography variant="h6" style={{ textTransform: 'capitalize' }}>
-              #{pokemon.id} {pokemon.name}
-            </Typography>
-            <Typography variant="body2">
-              {t('type')}: {translatedTypes.join(', ')}
-            </Typography>
-            <Typography variant="body2">
-              {t('height')}: {pokemon.height} m | {t('weight')}: {pokemon.weight} kg
-            </Typography>
-            <Typography variant="body2" style={{ marginTop: '10px' }}>
-              {t('region')}: {pokemon.region ? t(pokemon.region) : t('unknown')}
-            </Typography>
-            <Typography variant="body2">
-              {t('generation')}: {pokemon.generation ? t(pokemon.generation) : t('unknown')}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
+        <Card
+          style={{
+            backgroundColor: typeColors[pokemon.types[0]] || '#FFF',
+            color: '#000',
+            textAlign: 'center',
+            height: '100%',
+          }}
+        >
+          <CardContent>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <motion.img
+                src={pokemon.imageUrl}
+                alt={pokemon.name}
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  marginBottom: '10px',
+                }}
+                whileHover={{ scale: 1.2 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+              />
+              <Typography variant="h6" style={{ textTransform: 'capitalize' }}>
+                #{pokemon.id} {pokemon.name}
+              </Typography>
+              <Typography variant="body2">
+                {t('type')}: {translatedTypes.join(', ')}
+              </Typography>
+              <Typography variant="body2">
+                {t('height')}: {pokemon.height} m | {t('weight')}: {pokemon.weight} kg
+              </Typography>
+              <Typography variant="body2" style={{ marginTop: '10px' }}>
+                {t('region')}: {pokemon.region ? t(pokemon.region) : t('unknown')}
+              </Typography>
+              <Typography variant="body2">
+                {t('generation')}: {pokemon.generation ? t(pokemon.generation) : t('unknown')}
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </motion.div>
     </Link>
   );
 };

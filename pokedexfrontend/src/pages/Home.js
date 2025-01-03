@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import PokemonCard from '../components/PokemonCard';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -13,8 +12,13 @@ import {
   Drawer,
   FormControl,
   InputLabel,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
+const PokemonCard = lazy(() => import('../components/PokemonCard'));
+const Loading = lazy(() => import('../components/Loading'));
 
 const Home = () => {
   const { t } = useTranslation();
@@ -33,60 +37,106 @@ const Home = () => {
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedGeneration, setSelectedGeneration] = useState('');
 
+  const [page, setPage] = useState(1);
+  const limit = 20;
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-  const fetchPokemonByRegion = async (region) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/region/${region}`);
-      setPokemonList(response.data);
-    } catch (error) {
-      console.error('Error fetching Pokémon by region:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchPokemonByGeneration = async (generation) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/api/pokemon/filter/generation/${generation}`
-      );
-      setPokemonList(response.data);
-    } catch (error) {
-      console.error('Error fetching Pokémon by generation:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchPokemonList = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/pokemon/all/details`);
-      setPokemonList(response.data);
-      setHasMore(false);
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/paged?page=${page}&limit=${limit}`);
+      console.log('API Response:', response.data);
+      const { data, hasMore } = response.data;
+
+      if (!Array.isArray(data)) {
+        throw new Error(t('error.dataNotArray'));
+      }
+
+      setPokemonList((prev) => {
+        const existingIds = new Set(prev.map(p => p.id));
+        const newPokemon = data.filter(p => !existingIds.has(p.id));
+        return [...prev, ...newPokemon];
+      });
+      setHasMore(hasMore);
+      setPage((prev) => prev + 1);
     } catch (error) {
       console.error('API Error:', error);
+      setSnackbarMessage(t('error.dataLoad'));
+      setSnackbarOpen(true);
     }
-  }, [API_BASE_URL]);
+  }, [API_BASE_URL, page, limit, t]);
 
-  const fetchPokemonByType = async (type) => {
+  const fetchPokemonByType = useCallback(async (type) => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/type/${type}`);
-      setPokemonList(response.data);
+      const { data } = response.data;
+
+      if (!Array.isArray(data)) {
+        throw new Error(t('error.dataNotArray'));
+      }
+
+      setPokemonList(data);
+      setHasMore(false);
     } catch (error) {
       console.error('Error fetching Pokémon by type:', error);
+      setSnackbarMessage(t('error.typeFilter'));
+      setSnackbarOpen(true);
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_BASE_URL, t]);
+
+  const fetchPokemonByRegion = useCallback(async (region) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/region/${region}`);
+      const { data } = response.data;
+
+      if (!Array.isArray(data)) {
+        throw new Error(t('error.dataNotArray'));
+      }
+
+      setPokemonList(data);
+      setHasMore(false);
+    } catch (error) {
+      console.error('Error fetching Pokémon by region:', error);
+      setSnackbarMessage(t('error.regionFilter'));
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [API_BASE_URL, t]);
+
+  const fetchPokemonByGeneration = useCallback(async (generation) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/pokemon/filter/generation/${generation}`);
+      const { data } = response.data;
+
+      if (!Array.isArray(data)) {
+        throw new Error(t('error.dataNotArray'));
+      }
+
+      setPokemonList(data);
+      setHasMore(false);
+    } catch (error) {
+      console.error('Error fetching Pokémon by generation:', error);
+      setSnackbarMessage(t('error.generationFilter'));
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [API_BASE_URL, t]);
 
   useEffect(() => {
     fetchPokemonList();
-  }, [fetchPokemonList]);
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const generationMapping = {
     i: 1,
     ii: 2,
@@ -102,6 +152,9 @@ const Home = () => {
   const handleRegionChange = (event) => {
     const region = event.target.value;
     setSelectedRegion(region);
+    setPokemonList([]);
+    setPage(1);
+    setHasMore(true);
     if (region) {
       fetchPokemonByRegion(region);
     } else {
@@ -112,6 +165,9 @@ const Home = () => {
   const handleGenerationChange = (event) => {
     const generation = event.target.value;
     setSelectedGeneration(generation);
+    setPokemonList([]);
+    setPage(1);
+    setHasMore(true);
     if (generation) {
       const generationNumber = generationMapping[generation];
       fetchPokemonByGeneration(generationNumber);
@@ -123,6 +179,9 @@ const Home = () => {
   const handleTypeChange = (event) => {
     const type = event.target.value;
     setSelectedType(type);
+    setPokemonList([]);
+    setPage(1);
+    setHasMore(true);
     if (type) {
       fetchPokemonByType(type);
     } else {
@@ -134,8 +193,14 @@ const Home = () => {
     if (comparePokemon1 && comparePokemon2) {
       navigate(`/compare/${comparePokemon1}/${comparePokemon2}`);
     } else {
-      alert(t('selectTwoPokemon'));
+      setSnackbarMessage(t('error.compareSelection'));
+      setSnackbarOpen(true);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+    setSnackbarMessage('');
   };
 
   return (
@@ -230,6 +295,13 @@ const Home = () => {
               color: theme.palette.text.primary,
               boxShadow: theme.shadows[2],
             }}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  backgroundColor: theme.palette.background.paper,
+                },
+              },
+            }}
           >
             <MenuItem value="">
               <em>{t('all')}</em>
@@ -267,6 +339,13 @@ const Home = () => {
               borderRadius: theme.shape.borderRadius,
               color: theme.palette.text.primary,
               boxShadow: theme.shadows[2],
+            }}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  backgroundColor: theme.palette.background.paper,
+                },
+              },
             }}
           >
             <MenuItem value="">
@@ -314,7 +393,7 @@ const Home = () => {
               onChange={(e) => setComparePokemon1(e.target.value)}
             >
               {pokemonList.map((pokemon) => (
-                <MenuItem key={pokemon.id} value={pokemon.id}>
+                <MenuItem key={`${pokemon.id}-${pokemon.name}`} value={pokemon.id}>
                   {pokemon.name}
                 </MenuItem>
               ))}
@@ -328,7 +407,7 @@ const Home = () => {
               onChange={(e) => setComparePokemon2(e.target.value)}
             >
               {pokemonList.map((pokemon) => (
-                <MenuItem key={pokemon.id} value={pokemon.id}>
+                <MenuItem key={`${pokemon.id}-${pokemon.name}`} value={pokemon.id}>
                   {pokemon.name}
                 </MenuItem>
               ))}
@@ -350,18 +429,41 @@ const Home = () => {
         </Box>
       </Drawer>
 
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
       <InfiniteScroll
         dataLength={pokemonList.length}
         next={fetchPokemonList}
         hasMore={hasMore}
-        loader={<h4>{t('loading')}...</h4>}
+        loader={
+          <Suspense fallback={<div>{t('loading')}...</div>}>
+            <Loading />
+          </Suspense>
+        }
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>{t('allPokemonLoaded')}</b>
+          </p>
+        }
       >
         <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
-          {loading ? (
+          {loading && (
             <Typography>{t('loading')}</Typography>
-          ) : (
-            pokemonList.map((pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />)
           )}
+          <Suspense fallback={<div>{t('loading')}...</div>}>
+            {pokemonList.map((pokemon) => (
+              <PokemonCard key={`${pokemon.id}-${pokemon.name}`} pokemon={pokemon} />
+            ))}
+          </Suspense>
         </Box>
       </InfiniteScroll>
     </Box>

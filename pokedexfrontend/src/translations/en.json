@@ -117,5 +117,14 @@
     "fast": "Fast",
     "fluctuating": "Fluctuating",
     "erratic": "Erratic",
-    "growthRate.header": "Growth Rate"
+    "growthRate.header": "Growth Rate",
+    "allPokemonLoaded": "All Pokémon loaded.",
+    "error": {
+        "dataLoad": "An error occurred while loading data. Please try again later.",
+        "typeFilter": "An error occurred while applying type filter.",
+        "regionFilter": "An error occurred while applying region filter.",
+        "generationFilter": "An error occurred while applying generation filter.",
+        "compareSelection": "Please select two Pokémon to compare.",
+        "dataNotArray": "Data is not an array."
+    }
 }
