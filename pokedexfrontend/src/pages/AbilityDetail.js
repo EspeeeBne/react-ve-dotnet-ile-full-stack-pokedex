@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
-import { Typography, Box, Grid2, CircularProgress, Card, CardContent } from '@mui/material';
+import { Typography, Box, CircularProgress, Card, CardContent } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
-
-const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 const typeColors = {
   grass: '#78C850',
@@ -28,6 +26,8 @@ const typeColors = {
   ice: '#98D8D8',
 };
 
+const API_URL = process.env.REACT_APP_API_BASE_URL;
+
 const AbilityDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,16 +35,26 @@ const AbilityDetail = () => {
   const theme = useTheme();
   const [ability, setAbility] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pokemonDetails, setPokemonDetails] = useState({});
 
   useEffect(() => {
     const fetchAbility = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/pokemon/ability/${id}`);
-        const updatedPokemon = response.data.pokemon.map((pokemon) => ({
-          ...pokemon,
-          type: pokemon.type || 'normal',
-        }));
-        setAbility({ ...response.data, pokemon: updatedPokemon });
+        setAbility(response.data);
+
+        const fetchPokemonTypes = response.data.pokemon.map(async (pokemon) => {
+          const pokemonResponse = await axios.get(`${API_URL}/api/pokemon/${pokemon.id}`);
+          return { id: pokemon.id, types: pokemonResponse.data.types };
+        });
+
+        const fetchedDetails = await Promise.all(fetchPokemonTypes);
+        const detailsMap = fetchedDetails.reduce((acc, detail) => {
+          acc[detail.id] = detail.types;
+          return acc;
+        }, {});
+
+        setPokemonDetails(detailsMap);
       } catch (error) {
         console.error('Error fetching ability:', error);
         setAbility(null);
@@ -102,48 +112,47 @@ const AbilityDetail = () => {
         <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', marginBottom: 2 }}>
           {t('pokemonWithAbility')}:
         </Typography>
-        <Grid2 container spacing={2} justifyContent="center">
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="16px">
           {ability.pokemon.map((pokemon, index) => {
-            const backgroundColor = typeColors[pokemon.type] || theme.palette.action.selected;
-            const textColor = theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black;
+            const types = pokemonDetails[pokemon.id] || ['normal'];
+            const translatedTypes = types.map((type) => t(type));
+            const primaryType = types[0].toLowerCase();
+            const cardColor = typeColors[primaryType] || theme.palette.background.paper;
 
             return (
-              <Grid2 xs={6} sm={4} md={3} key={index}>
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => navigate(`/pokemon/${pokemon.id}`)}
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => navigate(`/pokemon/${pokemon.id}`)}
+              >
+                <Card
+                  sx={{
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                    borderRadius: 1,
+                    boxShadow: theme.shadows[2],
+                    padding: 2,
+                    backgroundColor: cardColor,
+                    color: theme.palette.getContrastText(cardColor),
+                  }}
                 >
-                  <Card
-                    sx={{
-                      cursor: 'pointer',
-                      textAlign: 'center',
-                      borderRadius: 1,
-                      boxShadow: theme.shadows[2],
-                      padding: 2,
-                      backgroundColor: backgroundColor,
-                      color: textColor,
-                    }}
-                  >
-                    <img
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                      alt={pokemon.name}
-                      style={{ width: '80px', height: '80px', marginBottom: '10px' }}
-                    />
-                    <CardContent>
-                      <Typography
-                        variant="body1"
-                        sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}
-                      >
-                        {pokemon.name}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </Grid2>
+                  <img
+                    src={pokemon.imageUrl}
+                    alt={pokemon.name}
+                    style={{ width: '80px', height: '80px', marginBottom: '10px' }}
+                  />
+                  <CardContent>
+                    <Typography variant="body1" sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
+                      {pokemon.name}
+                    </Typography>
+                    <Typography variant="body2">{translatedTypes.join(', ')}</Typography>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
-        </Grid2>
+        </Box>
       </Box>
     </motion.div>
   );

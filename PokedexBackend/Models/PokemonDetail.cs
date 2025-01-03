@@ -14,7 +14,9 @@ namespace PokedexBackend.Models
         public string Region { get; set; }
         public string Generation { get; set; }
         public string GrowthRate { get; set; }
+        public DateTime LastUpdated { get; set; }
         public GenderRate GenderRate { get; set; }
+        public List<EvolutionStep> EvolutionSteps { get; set; }
     }
 
 

@@ -20,6 +20,8 @@
 - **GrowthRate ve Cinsiyet Oranları**: Pokémon detay sayfasında **growthRate (yetişme hızı)** bilgisi ve **cinsiyet oranları (% Erkek / % Dişi)** görüntülenebilir. Dil seçeneğine göre % ambleminin yeri değişir. Cinsiyet oranları renkli ikonlarla gösterilir (Mavi: Erkek, Pembe: Dişi).
 - **404 Sayfası**: Eğer kullanıcı hatalı bir yere giderse **404** sayfasına yönlendiriliyor otomatik.
 - **Suspense Fallback**: Back-end tabanlı yavaş yüklenmelerde **Yükleniyor** tekeri döndüren sistem.
+- **PokeApiyi veri olarak kaydedebilme**: .json olarak pokeapi'yi kaydetme özelliği interneti kötü olanlar ve pokeapi'nin **fair use** politikasına uygun.
+- **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 
 ---
 
@@ -40,6 +42,7 @@
 - **.NET 9.0**: Back-end.
 - **Swagger**: API'yi test etmek için.
 - **PokeAPI**: Pokémon verilerini almak için bir API.
+- **Newtonsoft.Json**: .json dosyalarını kaydetme ve okuyabilme için.
 
 ---
 
@@ -165,6 +168,8 @@ Açıklama: Pokémon'ları türlerine göre filtreleme.
 - **Cinsiyet Oranı Görüntüleme**: Her Pokémon'un cinsiyet oranlarını (♂ %50 / ♀ %50) emoji ve renk kodlarıyla görüntüleme.
 - **Büyüme Oranı Görüntüleme**: Her Pokémon'un büyüme hızını ("Yavaş", "Orta," "Hızlı", vb.) detay sayfasında görebilme.
 - **Responsive Tasarım**: Gerek Mui gerek framer-motion gerek mobile göre Navbar'ın farklı gözükmesi olsun aşırı responsive bir proje.
+- **Veriyi kendi içine kaydetme**: .json dosyasına veri kaydetme bu sayede pokeapi yorulmuyor ve **fair use** politikasına uygun oluyor.
+- **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 
 
 

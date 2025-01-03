@@ -117,5 +117,14 @@
     "fast": "Hızlı",
     "fluctuating": "Dalgalı",
     "erratic": "Düzensiz",
-    "growthRate.header": "Büyüme Hızı"
+    "growthRate.header": "Büyüme Hızı",
+    "allPokemonLoaded": "Tüm Pokémonlar yüklendi.",
+    "error": {
+        "dataLoad": "Veriler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+        "typeFilter": "Tür filtresi uygulanırken bir hata oluştu.",
+        "regionFilter": "Bölge filtresi uygulanırken bir hata oluştu.",
+        "generationFilter": "Nesil filtresi uygulanırken bir hata oluştu.",
+        "compareSelection": "Lütfen karşılaştırmak için iki Pokémon seçin.",
+        "dataNotArray": "Veri bir dizi değil."
+    }
 }

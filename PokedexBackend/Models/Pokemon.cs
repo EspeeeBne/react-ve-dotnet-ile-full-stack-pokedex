@@ -9,5 +9,6 @@ namespace PokedexBackend.Models
         public List<string> Types { get; set; }
         public string Region { get; set; }
         public string Generation { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }
