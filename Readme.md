@@ -22,6 +22,7 @@
 - **Suspense Fallback**: Back-end tabanlı yavaş yüklenmelerde **Yükleniyor** tekeri döndüren sistem.
 - **PokeApiyi veri olarak kaydedebilme**: .json olarak pokeapi'yi kaydetme özelliği interneti kötü olanlar ve pokeapi'nin **fair use** politikasına uygun.
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
+- **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
 
 ---
 
@@ -37,6 +38,9 @@
 - **i18next**: Çoklu dil desteğini entegre etmek için.
 - **Chart.js**: Pokemon istatistiklerini görselleştirmek için bar grafik desteği.
 - **dotenv**: Api portu farklı olursa kullanıcı mağdur olmasın.
+- **lodash**: JavaScript dizileri, nesneleri ve stringleri daha kolay ve performanslı bir şekilde işlemek için kullanılan popüler bir yardımcı kütüphane. Karmaşık işlemleri basit hale getirir ve kodun okunabilirliğini artırır. Özellikle derin kopyalama, veri karşılaştırma ve veri manipülasyonu gibi işlemler için tercih edilir.
+- **i18next-browser-languagedetector**: Kullanıcının tarayıcı diline göre otomatik dil tespiti yapmaya yarayan bir i18next eklentisi. Uygulamanın, kullanıcının varsayılan tarayıcı diline uygun lokalizasyon dosyasını yüklemesini sağlar. URL parametreleri, tarayıcı ayarları veya `localStorage` gibi çeşitli kaynaklardan dil tespit edebilir.
+
 
 ### Back-end:
 - **.NET 9.0**: Back-end.
@@ -170,6 +174,7 @@ Açıklama: Pokémon'ları türlerine göre filtreleme.
 - **Responsive Tasarım**: Gerek Mui gerek framer-motion gerek mobile göre Navbar'ın farklı gözükmesi olsun aşırı responsive bir proje.
 - **Veriyi kendi içine kaydetme**: .json dosyasına veri kaydetme bu sayede pokeapi yorulmuyor ve **fair use** politikasına uygun oluyor.
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
+- **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
 
 
 

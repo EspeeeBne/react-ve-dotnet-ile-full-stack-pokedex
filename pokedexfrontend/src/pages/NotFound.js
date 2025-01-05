@@ -25,22 +25,26 @@ const NotFound = () => {
       sx={(theme) => ({
         position: 'absolute',
         left: '50%',
+        transition: 'background-color 0.5s ease',
         top: '50%',
         textAlign: 'center',
         transform: 'translate(-50%, -50%)',
         '& img': {
           maxWidth: '100vw',
+          transition: 'background-color 0.5s ease',
           width: '500px',
           boxShadow: theme.shadows[6],
           marginBottom: theme.spacing(2),
         },
         '& h4': {
           fontWeight: 'bold',
+          transition: 'background-color 0.5s ease',
           color: theme.palette.text.primary,
           marginBottom: theme.spacing(1),
         },
         '& p': {
           color: theme.palette.text.secondary,
+          transition: 'background-color 0.5s ease',
         },
       })}
     >
