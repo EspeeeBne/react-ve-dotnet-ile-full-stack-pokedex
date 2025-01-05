@@ -162,7 +162,7 @@ namespace PokedexBackend.Services
 
             paginatedResponse.Data.Add(pokemonDetail);
             paginatedResponse.Total += 1;
-            paginatedResponse.HasMore = paginatedResponse.Total < 1008;
+            paginatedResponse.HasMore = paginatedResponse.Total < 10197;
             await _localJsonStorage.SavePokemonDataAsync(paginatedResponse.Data, paginatedResponse.Page, paginatedResponse.Limit, paginatedResponse.Total, paginatedResponse.HasMore);
 
             return pokemonDetail;

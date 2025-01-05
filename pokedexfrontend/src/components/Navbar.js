@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -6,22 +6,26 @@ import {
   Typography,
   Box,
   InputBase,
-  Paper,
   Card,
   CardContent,
   Modal,
   Button,
   MenuItem,
   Select,
+  CircularProgress,
+  Paper,
 } from '@mui/material';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchIcon from '@mui/icons-material/Search';
 import TranslateIcon from '@mui/icons-material/Translate';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { debounce } from 'lodash';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '@mui/material/styles';
 
 const API_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -45,19 +49,57 @@ const typeColors = {
   ice: '#98D8D8',
 };
 
+const searchContainerVariants = {
+  initial: { width: '200px' },
+  expanded: { width: '300px' },
+};
+
 const Navbar = ({ toggleTheme, darkMode }) => {
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [languageModalOpen, setLanguageModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const location = useLocation();
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/api/pokemon/search/${searchQuery}`);
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error('Error searching Pokémon:', error);
-    }
+  const theme = useTheme();
+
+  const debouncedSearchRef = useRef(
+    debounce(async (query) => {
+      if (!query.trim()) {
+        setSearchResults([]);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(`${API_URL}/api/pokemon/search/${query}`);
+        console.log(t('apiResponse'), response.data);
+        const data = Array.isArray(response.data) ? response.data : [response.data];
+        setSearchResults(data);
+      } catch (err) {
+        console.error(t('searchErrorConsole'), err);
+        setError(t('searchError'));
+        setSearchResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 500)
+  );
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debouncedSearchRef.current(query);
+  };
+
+  const handleSearch = () => {
+    debouncedSearchRef.current.cancel();
+    debouncedSearchRef.current(searchQuery);
   };
 
   const changeLanguage = (lang) => {
@@ -65,110 +107,257 @@ const Navbar = ({ toggleTheme, darkMode }) => {
     setLanguageModalOpen(false);
   };
 
+  useEffect(() => {
+    setSearchResults([]);
+    setSearchQuery('');
+    setError(null);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const currentDebounced = debouncedSearchRef.current;
+    return () => {
+      currentDebounced.cancel();
+    };
+  }, []);
+
   return (
     <>
-      <AppBar position="sticky" color="primary">
+      <AppBar
+        position="sticky"
+        sx={{
+          boxShadow: 3,
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? theme.palette.background.paper
+              : theme.palette.background.default,
+          transition: 'background-color 0.5s ease, color 0.5s ease',
+        }}
+      >
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white' }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}
+            >
               {t('pokemonApp')}
             </Typography>
           </Link>
 
-          <Box display="flex" alignItems="center" sx={{ position: 'relative' }}>
+          <motion.div
+            variants={searchContainerVariants}
+            initial="initial"
+            animate={isFocused ? 'expanded' : 'initial'}
+            transition={{ duration: 0.3 }}
+            style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+          >
             <InputBase
               placeholder={t('search')}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              aria-label={t('searchAriaLabel')}
               sx={{
-                backgroundColor: (theme) => theme.palette.background.default,
-                color: (theme) => theme.palette.text.primary,
+                backgroundColor: theme.palette.background.default,
+                color: theme.palette.text.primary,
                 padding: '5px 10px',
                 borderRadius: 1,
-                marginRight: 2,
+                marginRight: 1,
+                width: '100%',
+                '&::placeholder': {
+                  color: theme.palette.text.primary,
+                  opacity: 0.7,
+                },
               }}
             />
-            <IconButton onClick={handleSearch} sx={{ color: 'white' }}>
+            <IconButton
+              onClick={handleSearch}
+              sx={{ color: theme.palette.text.primary }}
+              aria-label={t('searchButtonAriaLabel')}
+            >
               <SearchIcon />
             </IconButton>
 
-            {searchQuery && searchResults.length > 0 && (
-              <Paper
-                style={{
-                  position: 'absolute',
-                  top: '40px',
-                  left: 0,
-                  width: '300px',
-                  maxHeight: '400px',
-                  overflowY: 'auto',
-                  zIndex: 1000,
-                  borderRadius: '10px',
-                }}
-              >
-                <Box>
-                  {searchResults.map((result) => (
-                    <Link
-                      key={result.id}
-                      to={`/pokemon/${result.id}`}
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      <Card
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          margin: '5px',
-                          backgroundColor: typeColors[result.types?.[0]] || '#fff',
-                          color: darkMode ? 'white' : 'black',
-                        }}
-                      >
-                        <img
-                          src={result.imageUrl}
-                          alt={result.name}
-                          style={{
-                            width: '50px',
-                            height: '50px',
-                            margin: '5px',
-                            borderRadius: '50%',
-                            backgroundColor: '#f3f3f3',
+            <AnimatePresence>
+              {loading && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    top: '50px',
+                    left: 0,
+                    width: '100%',
+                    padding: '10px',
+                    zIndex: 1000,
+                    borderRadius: '10px',
+                    backgroundColor: theme.palette.background.paper,
+                    color: theme.palette.mode === 'dark' ? 'white' : 'black',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CircularProgress size={24} color="inherit" />
+                  <Typography variant="body2" sx={{ marginLeft: 1 }}>
+                    {t('loading')}
+                  </Typography>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    top: '50px',
+                    left: 0,
+                    width: '100%',
+                    padding: '10px',
+                    zIndex: 1000,
+                    borderRadius: '10px',
+                    backgroundColor: theme.palette.error.main,
+                    color: 'white',
+                  }}
+                >
+                  <Typography variant="body2">{error}</Typography>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {searchQuery && searchResults.length > 0 && !loading && !error && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    position: 'absolute',
+                    top: '60px',
+                    left: 0,
+                    width: '100%',
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    zIndex: 1000,
+                    borderRadius: '10px',
+                    backgroundColor: theme.palette.background.paper,
+                  }}
+                >
+                  <Paper elevation={3}>
+                    <Box>
+                      {searchResults.map((result) => (
+                        <Link
+                          key={result.id}
+                          to={`/pokemon/${result.id}`}
+                          style={{ textDecoration: 'none', color: 'inherit' }}
+                          onClick={() => {
+                            setSearchResults([]);
+                            setSearchQuery('');
                           }}
-                        />
-                        <CardContent style={{ flex: '1 1 auto' }}>
-                          <Typography
-                            variant="body1"
-                            style={{
-                              fontWeight: 'bold',
-                              textTransform: 'capitalize',
-                              textAlign: 'center',
-                            }}
+                        >
+                          <motion.div
+                            whileHover={{ scale: 1.02, boxShadow: '0px 4px 20px rgba(0,0,0,0.2)' }}
+                            transition={{ duration: 0.2 }}
                           >
-                            {result.name}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </Box>
-              </Paper>
-            )}
-          </Box>
+                            <Card
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                margin: '5px',
+                                backgroundColor:
+                                  typeColors[result.types?.[0]] || theme.palette.background.paper,
+                                color: theme.palette.text.primary,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <img
+                                src={result.imageUrl}
+                                alt={result.name}
+                                style={{
+                                  width: '50px',
+                                  height: '50px',
+                                  margin: '5px',
+                                  borderRadius: '50%',
+                                  backgroundColor: '#f3f3f3',
+                                }}
+                              />
+                              <CardContent sx={{ flex: '1 1 auto' }}>
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    fontWeight: 'bold',
+                                    textTransform: 'capitalize',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  {result.name}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        </Link>
+                      ))}
+                    </Box>
+                  </Paper>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           <Box display="flex" alignItems="center" gap={2}>
-            <IconButton onClick={toggleTheme} sx={{ color: 'white' }}>
-              {darkMode ? <WbSunnyIcon /> : <NightlightIcon />}
+            <IconButton
+              onClick={toggleTheme}
+              sx={{ color: theme.palette.text.primary }}
+              aria-label={t('toggleThemeAriaLabel')}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {darkMode ? (
+                  <motion.div
+                    key="light"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <WbSunnyIcon />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="dark"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <NightlightIcon />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </IconButton>
 
             <Button
               onClick={() => setLanguageModalOpen(true)}
               startIcon={<TranslateIcon />}
+              variant="outlined"
               sx={{
-                color: 'white',
+                color: theme.palette.text.primary,
                 textTransform: 'none',
-                backgroundColor: (theme) => theme.palette.action.hover,
+                borderColor: theme.palette.text.primary,
                 '&:hover': {
-                  backgroundColor: (theme) => theme.palette.action.selected,
+                  backgroundColor: theme.palette.action.hover,
+                  borderColor: theme.palette.text.primary,
                 },
               }}
+              aria-label={t('changeLanguageAriaLabel')}
             >
               {t('changeLanguage')}
             </Button>
@@ -188,7 +377,7 @@ const Navbar = ({ toggleTheme, darkMode }) => {
       >
         <Box
           sx={{
-            backgroundColor: (theme) => theme.palette.background.paper,
+            backgroundColor: theme.palette.background.paper,
             padding: 3,
             borderRadius: 1,
             boxShadow: 24,
@@ -200,6 +389,7 @@ const Navbar = ({ toggleTheme, darkMode }) => {
           <IconButton
             onClick={() => setLanguageModalOpen(false)}
             sx={{ position: 'absolute', top: 10, right: 10 }}
+            aria-label={t('closeLanguageModalAriaLabel')}
           >
             <CloseIcon />
           </IconButton>
@@ -211,14 +401,19 @@ const Navbar = ({ toggleTheme, darkMode }) => {
             onChange={(e) => changeLanguage(e.target.value)}
             fullWidth
             sx={{ marginBottom: 2 }}
+            aria-label={t('languageSelectAriaLabel')}
           >
             <MenuItem value="tr">
-              <img src="https://flagcdn.com/w40/tr.png" alt="TR" style={{ marginRight: '10px' }} />
-              Türkçe
+              <Box display="flex" alignItems="center">
+                <img src="https://flagcdn.com/w40/tr.png" alt="TR" style={{ marginRight: '10px' }} />
+                Türkçe
+              </Box>
             </MenuItem>
             <MenuItem value="en">
-              <img src="https://flagcdn.com/w40/us.png" alt="EN" style={{ marginRight: '10px' }} />
-              English
+              <Box display="flex" alignItems="center">
+                <img src="https://flagcdn.com/w40/us.png" alt="EN" style={{ marginRight: '10px' }} />
+                English
+              </Box>
             </MenuItem>
           </Select>
         </Box>
