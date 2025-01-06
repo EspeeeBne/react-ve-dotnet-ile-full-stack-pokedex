@@ -148,15 +148,15 @@ const Home = () => {
   }, []);
 
   const generationMapping = {
-    i: 1,
-    ii: 2,
-    iii: 3,
-    iv: 4,
-    v: 5,
-    vi: 6,
-    vii: 7,
-    viii: 8,
-    ix: 9,
+    i: "generation-i",
+    ii: "generation-ii",
+    iii: "generation-iii",
+    iv: "generation-iv",
+    v: "generation-v",
+    vi: "generation-vi",
+    vii: "generation-vii",
+    viii: "generation-viii",
+    ix: "generation-ix",
   };
 
   const handleRegionChange = (event) => {

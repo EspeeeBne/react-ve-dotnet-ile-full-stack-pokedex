@@ -3,13 +3,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
 import { Routes, Route } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
 import Navbar from './components/Navbar';
 import Loading from './components/Loading';
 import './i18n';
 import NotFound from './pages/NotFound';
+import Footer from './components/Footer';
 
 const Home = lazy(() => import('./pages/Home'));
 const PokemonDetail = lazy(() => import('./pages/PokemonDetail'));
@@ -18,8 +18,6 @@ const ComparePokemon = lazy(() => import('./pages/ComparePokemon'));
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(true);
-  const { t } = useTranslation();
-
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
@@ -38,21 +36,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-        <footer
-          style={{
-            textAlign: 'center',
-            padding: '10px 0',
-            backgroundColor: darkMode ? '#333' : '#f3f3f3',
-            color: darkMode ? '#fff' : '#000',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            position: 'static',
-            bottom: 0,
-            width: '100%',
-          }}
-        >
-          {t('createdBy')}
-        </footer>
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );
