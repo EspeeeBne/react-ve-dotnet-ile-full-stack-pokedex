@@ -423,6 +423,46 @@ namespace PokedexBackend.Services
             return evolutionSteps;
         }
 
+
+        public async Task<List<PokemonDetail>> FilterPokemonByTypeAsync(string type)
+        {
+            var paginatedResponse = await _localJsonStorage.LoadPokemonDataAsync();
+            var allPokemon = paginatedResponse.Data;
+
+            var filtered = allPokemon
+                .Where(p => p.Types != null && p.Types.Any(t => t.Equals(type, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            return filtered;
+        }
+
+        public async Task<List<PokemonDetail>> FilterPokemonByRegionAsync(string region)
+        {
+            var paginatedResponse = await _localJsonStorage.LoadPokemonDataAsync();
+            var allPokemon = paginatedResponse.Data;
+
+            var filtered = allPokemon
+                .Where(p => !string.IsNullOrEmpty(p.Region)
+                    && p.Region.Equals(region, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            return filtered;
+        }
+
+        public async Task<List<PokemonDetail>> FilterPokemonByGenerationAsync(string generation)
+        {
+            var paginatedResponse = await _localJsonStorage.LoadPokemonDataAsync();
+            var allPokemon = paginatedResponse.Data;
+
+            var filtered = allPokemon
+                .Where(p => !string.IsNullOrEmpty(p.Generation)
+                    && p.Generation.Equals(generation, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            return filtered;
+        }
+
+
         public async Task<AbilityDetail> GetAbilityDetailsAsync(int abilityId)
         {
             var paginatedResponse = await _localJsonStorage.LoadPokemonDataAsync();

@@ -134,8 +134,9 @@ namespace PokedexBackend.Controllers
         {
             try
             {
-                var pokemonByType = await _pokeApiService.GetPokemonByTypeAsync(type);
-                return Ok(pokemonByType);
+                var filtered = await _pokeApiService.FilterPokemonByTypeAsync(type);
+
+                return Ok(new { data = filtered });
             }
             catch (Exception ex)
             {
@@ -148,12 +149,8 @@ namespace PokedexBackend.Controllers
         {
             try
             {
-                var pokemonByRegion = await _pokeApiService.GetPokemonByRegionAsync(regionId);
-                if (pokemonByRegion == null || !pokemonByRegion.Any())
-                {
-                    return NotFound(new { Message = $"Bölgede ({regionId}) Pokémon bulunamadý." });
-                }
-                return Ok(pokemonByRegion);
+                var filtered = await _pokeApiService.FilterPokemonByRegionAsync(regionId);
+                return Ok(new { data = filtered });
             }
             catch (Exception ex)
             {
@@ -166,12 +163,8 @@ namespace PokedexBackend.Controllers
         {
             try
             {
-                var pokemonByGeneration = await _pokeApiService.GetPokemonByGenerationAsync(generationId);
-                if (pokemonByGeneration == null || !pokemonByGeneration.Any())
-                {
-                    return NotFound(new { Message = $"Nesilde ({generationId}) Pokémon bulunamadý." });
-                }
-                return Ok(pokemonByGeneration);
+                var filtered = await _pokeApiService.FilterPokemonByGenerationAsync(generationId);
+                return Ok(new { data = filtered });
             }
             catch (Exception ex)
             {
