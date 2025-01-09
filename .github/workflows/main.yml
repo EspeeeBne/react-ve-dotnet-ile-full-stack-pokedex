@@ -1,0 +1,50 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+      working-directory: ./pokedexfrontend
+
+    - name: Build project
+      run: npm run build
+      working-directory: ./pokedexfrontend
+
+  backend:
+    name: Backend Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0'
+
+    - name: Restore and Build Backend
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
+      working-directory: ./PokedexBackend

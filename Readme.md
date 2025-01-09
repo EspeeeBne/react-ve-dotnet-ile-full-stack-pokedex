@@ -23,6 +23,7 @@
 - **PokeApiyi veri olarak kaydedebilme**: .json olarak pokeapi'yi kaydetme özelliği interneti kötü olanlar ve pokeapi'nin **fair use** politikasına uygun.
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 - **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
+- **Contexts**: Sitenin back-end tarafı kapalıysa otomatikmen site kapalı yazısı getiren bir özellik.
 
 ---
 
@@ -152,6 +153,10 @@ Açıklama: Pokémon'ları bulundukları bölgelere göre filtreleme.
 GET /filter/type/{type}
 Açıklama: Pokémon'ları türlerine göre filtreleme.
 
+1. Back-end kapalı mı açık mı kontrol etme
+GET /api/status
+Açıklama: Back-end kapalıysa front-end sitemiz kapalı desin diye koyulmuş bir şey.
+
 ---
 
 ## 🏆 Öne Çıkan Özellikler
@@ -175,7 +180,7 @@ Açıklama: Pokémon'ları türlerine göre filtreleme.
 - **Veriyi kendi içine kaydetme**: .json dosyasına veri kaydetme bu sayede pokeapi yorulmuyor ve **fair use** politikasına uygun oluyor.
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 - **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
-
+- **Contexts**: Sitenin back-end tarafı kapalıysa otomatikmen site kapalı yazısı getiren bir özellik.
 
 
 ---

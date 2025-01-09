@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // Front-end Baþka bir portta çalýþýyorsa burayý güncelleyin.
+        policy.WithOrigins("http://localhost:3000") // Front-end baþka bir portta çalýþýyorsa burayý güncelleyin.
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
