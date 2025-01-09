@@ -780,5 +780,17 @@ namespace PokedexBackend.Services
                 HasMore = hasMore
             };
         }
+        public async Task<bool> IsServiceAvailableAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon/1");
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -124,7 +124,9 @@
         "regionFilter": "An error occurred while applying region filter.",
         "generationFilter": "An error occurred while applying generation filter.",
         "compareSelection": "Please select two Pokémon to compare.",
-        "dataNotArray": "Data is not an array."
+        "dataNotArray": "Data is not an array.",
+        "fetchingSiteStatus": "Error fetching site status",
+        "networkNotOk": "There was a problem connecting to the back-end."
     },
     "searchError": "Pokémon bulunamadı.",
     "apiResponse": "API Response:",
@@ -143,6 +145,7 @@
     "finalEvolution": "This Pokémon does not evolve further.",
     "noAbilitiesFound": "No abilities found.",
     "fetchAbilityErrorConsole": "Error: There was a problem pulling ability data.",
-    "fetchAbilityError": "There was an error loading the ability information."
+    "fetchAbilityError": "There was an error loading the ability information.",
+    "siteOffline":"Site is offline. Please try again later."
 
 }

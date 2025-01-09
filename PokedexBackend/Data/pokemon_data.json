@@ -384,7 +384,26 @@
         "MalePercentage": 87.5,
         "FemalePercentage": 12.5
       },
-      "EvolutionSteps": null
+      "EvolutionSteps": [
+        {
+          "Id": 4,
+          "Name": "charmander",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+          "LastUpdated": "2025-01-09T18:41:21.7358415Z"
+        },
+        {
+          "Id": 5,
+          "Name": "charmeleon",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
+          "LastUpdated": "2025-01-09T18:41:22.340856Z"
+        },
+        {
+          "Id": 6,
+          "Name": "charizard",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+          "LastUpdated": "2025-01-09T18:41:22.6219771Z"
+        }
+      ]
     },
     {
       "Id": 7,

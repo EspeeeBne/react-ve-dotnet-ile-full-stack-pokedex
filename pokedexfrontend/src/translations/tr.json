@@ -124,7 +124,9 @@
         "regionFilter": "Bölge filtresi uygulanırken bir hata oluştu.",
         "generationFilter": "Nesil filtresi uygulanırken bir hata oluştu.",
         "compareSelection": "Lütfen karşılaştırmak için iki Pokémon seçin.",
-        "dataNotArray": "Veri bir dizi değil."
+        "dataNotArray": "Veri bir dizi değil.",
+        "fetchingSiteStatus": "Site durumu alınırken hata oluştu",
+        "networkNotOk": "Back-end'e bağlanırken bir sorun oldu."
     },
     "searchError": "Pokémon bulunamadı.",
     "apiResponse": "API Yanıtı:",
@@ -142,5 +144,6 @@
     "noAbilitiesFound": "Yetenek bulunamadı.",
     "fetchAbilityErrorConsole": "Hata: Yetenek verisi çekilirken bir sorun oluştu.",
     "fetchAbilityError": "Yetenek bilgisi yüklenirken bir hata oluştu.",
-    "fetchEvolutionError":"Bu pokémon Database'de yok eklenmesini isteyin."
+    "fetchEvolutionError":"Bu pokémon Database'de yok eklenmesini isteyin.",
+    "siteOffline":"Site şu an kapalıdır. Lütfen daha sonra tekrar deneyin."
 }
