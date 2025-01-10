@@ -43,7 +43,7 @@ return (
                 color: theme.palette.text.primary,
             }}
             >
-            {t('messages.pokemonApp')}
+            {t('pokemonApp')}
             </Typography>
         </Box>
         <Typography

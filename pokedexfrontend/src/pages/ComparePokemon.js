@@ -10,12 +10,14 @@ import {
   Button,
   useTheme,
   Alert,
+  Skeleton,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PokemonStatChart from '../components/PokemonStatChart';
 import PokemonCompareRadar from '../components/PokemonCompareWithRadar';
-import Loading from '../components/Loading';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 
 const API_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -38,7 +40,6 @@ const typeColors = {
   dark: '#705848',
   ice: '#98D8D8',
 };
-
 
 const PokemonCompare = () => {
   const { id1, id2 } = useParams();
@@ -81,15 +82,43 @@ const PokemonCompare = () => {
     return (
       <Box
         display="flex"
-        justifyContent="center"
+        flexDirection="column"
         alignItems="center"
+        justifyContent="center"
         sx={{
-          height: '100vh',
+          minHeight: '100vh',
           backgroundColor: theme.palette.background.default,
-          transition: 'background-color 0.5s ease'
+          padding: 2,
+          transition: 'background-color 0.5s ease',
         }}
       >
-        <Loading />
+
+        <Skeleton variant="text" width="60%" height={40} />
+
+        <Skeleton variant="rectangular" width="80%" height={300} sx={{ mt: 2, mb: 4 }} />
+
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
+          {[1, 2].map((_, index) => (
+            <Box key={index} width={300}>
+              <Skeleton variant="rectangular" height={200} sx={{ borderRadius: '15px' }} />
+              <Skeleton variant="text" width="80%" height={30} sx={{ mt: 1 }} />
+              <Skeleton variant="text" width="60%" height={20} />
+              <Box display="flex" flexDirection="row" gap="10px" mt={1}>
+                <Skeleton variant="text" height={30} width="30%" />
+                <Skeleton variant="text" height={30} width="30%" />
+              </Box>
+
+              <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" gap="20px" mt={2}>
+                {Array.from(new Array(3)).map((_, evoIndex) => (
+                  <React.Fragment key={evoIndex}>
+                    <Skeleton variant="circular" width={80} height={80} />
+                    {evoIndex < 2 && <ArrowForwardIcon fontSize="large" />}
+                  </React.Fragment>
+                ))}
+              </Box>
+            </Box>
+          ))}
+        </Box>
       </Box>
     );
   }
@@ -104,7 +133,7 @@ const PokemonCompare = () => {
           height: '100vh',
           backgroundColor: theme.palette.background.default,
           padding: 2,
-          transition: 'background-color 0.5s ease, color 0.5s ease'
+          transition: 'background-color 0.5s ease, color 0.5s ease',
         }}
       >
         <Alert severity="error">{error}</Alert>
@@ -137,7 +166,7 @@ const PokemonCompare = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          transition: 'background-color 0.5s ease, color 0.5s ease'
+          transition: 'background-color 0.5s ease, color 0.5s ease',
         }}
       >
         <CardContent>
@@ -153,7 +182,7 @@ const PokemonCompare = () => {
                 backgroundColor: pokemonTypeColor,
                 boxShadow: `0px 4px 15px ${boxShadowColor}`,
                 mb: 2,
-                transition: 'background-color 0.5s ease'
+                transition: 'background-color 0.5s ease',
               }}
             >
               <img
@@ -172,7 +201,7 @@ const PokemonCompare = () => {
                 textTransform: 'capitalize',
                 fontWeight: 'bold',
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               #{pokemon.id} {pokemon.name}
@@ -181,7 +210,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('type')}: ${translatedTypes.join(', ')}`}
@@ -190,7 +219,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('height')}: ${pokemon.height} m`}
@@ -199,7 +228,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('weight')}: ${pokemon.weight} kg`}
@@ -208,7 +237,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('region')}: ${t(pokemon.region)}`}
@@ -217,7 +246,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('generation')}: ${t(pokemon.generation)}`}
@@ -226,7 +255,7 @@ const PokemonCompare = () => {
               variant="body1"
               sx={{
                 color: textColor,
-                transition: 'color 0.5s ease'
+                transition: 'color 0.5s ease',
               }}
             >
               {`${t('growthRate.header')}: ${t(pokemon.growthRate)}`}
@@ -237,7 +266,7 @@ const PokemonCompare = () => {
                 sx={{
                   fontWeight: 'bold',
                   color: 'blue',
-                  transition: 'color 0.5s ease'
+                  transition: 'color 0.5s ease',
                 }}
               >
                 {`♂️ ${formatPercentage(pokemon.genderRate?.malePercentage || 0)}`}
@@ -247,7 +276,7 @@ const PokemonCompare = () => {
                 sx={{
                   fontWeight: 'bold',
                   color: '#d84d78',
-                  transition: 'color 0.5s ease'
+                  transition: 'color 0.5s ease',
                 }}
               >
                 {`♀️ ${formatPercentage(pokemon.genderRate?.femalePercentage || 0)}`}
@@ -280,7 +309,7 @@ const PokemonCompare = () => {
                         ? typeColors[primaryType]
                         : `${typeColors[primaryType]}CC`,
                   },
-                  transition: 'background-color 0.5s ease, color 0.5s ease'
+                  transition: 'background-color 0.5s ease, color 0.5s ease',
                 }}
               >
                 {t('goToWiki')}
@@ -298,7 +327,7 @@ const PokemonCompare = () => {
               mt: 4,
               fontWeight: 'bold',
               color: textColor,
-              transition: 'color 0.5s ease'
+              transition: 'color 0.5s ease',
             }}
           >
             {t('abilities')}
@@ -326,7 +355,7 @@ const PokemonCompare = () => {
                               ? typeColors[primaryType]
                               : `${typeColors[primaryType]}CC`,
                         },
-                        transition: 'background-color 0.5s ease, color 0.5s ease'
+                        transition: 'background-color 0.5s ease, color 0.5s ease',
                       }}
                     >
                       {t(ability.name)} ({ability.isHidden ? t('hiddenAbility') : t('regularAbility')})
@@ -342,7 +371,7 @@ const PokemonCompare = () => {
                   color: theme.palette.warning.main,
                   textAlign: 'center',
                   fontSize: '18px',
-                  transition: 'color 0.5s ease'
+                  transition: 'color 0.5s ease',
                 }}
               >
                 {t('noAbilitiesFound')}
@@ -356,7 +385,7 @@ const PokemonCompare = () => {
               mt: 4,
               fontWeight: 'bold',
               color: textColor,
-              transition: 'color 0.5s ease'
+              transition: 'color 0.5s ease',
             }}
           >
             {t('evolutionChain')}
@@ -376,12 +405,11 @@ const PokemonCompare = () => {
               boxShadow: theme.shadows[3],
               overflowX: 'auto',
               width: '100%',
-              transition: 'background-color 0.5s ease, color 0.5s ease'
+              transition: 'background-color 0.5s ease, color 0.5s ease',
             }}
           >
             {Array.isArray(evolutionChain) && evolutionChain.length > 0 ? (
               evolutionChain.map((step, index) => {
-
                 return (
                   <React.Fragment key={index}>
                     <Box
@@ -395,7 +423,7 @@ const PokemonCompare = () => {
                       justifyContent="center"
                       sx={{
                         cursor: 'pointer',
-                        transition: 'transform 0.3s ease',
+                        transition: 'transform 0.3s ease, background-color 0.5s ease, color 0.5s ease',
                         backgroundColor: theme.palette.background.paper,
                         borderRadius: theme.shape.borderRadius,
                         p: 2,
@@ -404,11 +432,11 @@ const PokemonCompare = () => {
                     >
                       <Box
                         sx={{
-                          border: `2px solid ${theme.palette.background.paper},}`,
+                          border: `2px solid ${theme.palette.background.paper}`,
                           borderRadius: '50%',
                           p: 1,
                           backgroundColor: theme.palette.background.paper,
-                          transition: 'border-color 0.5s ease, background-color 0.5s ease'
+                          transition: 'border-color 0.5s ease, background-color 0.5s ease',
                         }}
                       >
                         <img
@@ -428,22 +456,14 @@ const PokemonCompare = () => {
                           fontWeight: 'bold',
                           color: theme.palette.text.primary,
                           mt: 1,
-                          transition: 'color 0.5s ease'
+                          transition: 'color 0.5s ease',
                         }}
                       >
                         {step.name}
                       </Typography>
                     </Box>
                     {index < evolutionChain.length - 1 && (
-                      <Typography
-                        sx={{
-                          fontSize: '30px',
-                          color: theme.palette.text.secondary,
-                          transition: 'color 0.5s ease'
-                        }}
-                      >
-                        ➞
-                      </Typography>
+                      <ArrowForwardIcon fontSize="large" sx={{ color: theme.palette.text.secondary }} />
                     )}
                   </React.Fragment>
                 );
@@ -456,7 +476,7 @@ const PokemonCompare = () => {
                   color: theme.palette.warning.main,
                   textAlign: 'center',
                   fontSize: '18px',
-                  transition: 'color 0.5s ease'
+                  transition: 'color 0.5s ease',
                 }}
               >
                 {t('finalEvolution')}
@@ -482,7 +502,7 @@ const PokemonCompare = () => {
           margin: '20px 0',
           fontWeight: 'bold',
           color: theme.palette.text.primary,
-          transition: 'color 0.5s ease'
+          transition: 'color 0.5s ease',
         }}
       >
         {`${t(pokemon1.name)} ${t('and')} ${t(pokemon2.name)} ${t('comparison')}`}

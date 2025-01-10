@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
-import { Typography, Box, Card, CardContent} from '@mui/material';
+import { Typography, Box, Card, CardContent, Skeleton } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
-import Loading from '../components/Loading';
+
 
 const typeColors = {
   grass: '#78C850',
@@ -76,15 +76,27 @@ const AbilityDetail = () => {
     return (
       <Box
         display="flex"
-        justifyContent="center"
+        flexDirection="column"
         alignItems="center"
+        justifyContent="center"
         sx={{
-          height: '100vh',
+          minHeight: '100vh',
           backgroundColor: theme.palette.background.default,
-          transition: 'background-color 0.5s ease'
+          padding: 2,
+          transition: 'background-color 0.5s ease',
         }}
       >
-        <Loading />
+        <Skeleton variant="text" width="60%" height={40} />
+        <Skeleton variant="rectangular" width="80%" height={100} sx={{ mt: 2, mb: 4 }} />
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="16px">
+          {Array.from(new Array(20)).map((_, index) => (
+            <Box key={index} width={150}>
+              <Skeleton variant="rectangular" height={150} />
+              <Skeleton variant="text" height={30} sx={{ mt: 1 }} />
+              <Skeleton variant="text" height={20} width="60%" />
+            </Box>
+          ))}
+        </Box>
       </Box>
     );
 
@@ -146,7 +158,10 @@ const AbilityDetail = () => {
             style={{ width: '80px', height: '80px', marginBottom: '10px' }}
           />
           <CardContent>
-            <Typography variant="body1" sx={{ textTransform: 'capitalize', fontWeight: 'bold', transition: 'color 0.5s ease' }}>
+            <Typography
+              variant="body1"
+              sx={{ textTransform: 'capitalize', fontWeight: 'bold', transition: 'color 0.5s ease' }}
+            >
               {pokemon.name}
             </Typography>
             <Typography variant="body2" sx={{ transition: 'color 0.5s ease' }}>
@@ -183,7 +198,7 @@ const AbilityDetail = () => {
             fontWeight: 'bold',
             textAlign: 'center',
             textTransform: 'capitalize',
-            transition: 'color 0.5s ease'
+            transition: 'color 0.5s ease',
           }}
         >
           {t('abilityName')}: {ability.name}
@@ -196,7 +211,7 @@ const AbilityDetail = () => {
               marginBottom: 1,
               fontStyle: 'italic',
               color: theme.palette.text.secondary,
-              transition: 'color 0.5s ease'
+              transition: 'color 0.5s ease',
             }}
           >
             {t('abilityEffect')}:
@@ -206,7 +221,7 @@ const AbilityDetail = () => {
             sx={{
               lineHeight: 1.6,
               textAlign: 'center',
-              transition: 'color 0.5s ease'
+              transition: 'color 0.5s ease',
             }}
           >
             {ability.effect}
@@ -219,7 +234,7 @@ const AbilityDetail = () => {
             fontWeight: 'bold',
             textAlign: 'center',
             marginBottom: 2,
-            transition: 'color 0.5s ease'
+            transition: 'color 0.5s ease',
           }}
         >
           {t('pokemonWithAbility')}:
