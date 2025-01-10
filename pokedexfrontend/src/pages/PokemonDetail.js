@@ -10,11 +10,12 @@ import {
   Button,
   useTheme,
   Alert,
+  Skeleton,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PokemonStatChart from '../components/PokemonStatChart';
-import Loading from '../components/Loading';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const API_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -37,7 +38,6 @@ const typeColors = {
   dark: '#705848',
   ice: '#98D8D8',
 };
-
 
 const PokemonDetail = () => {
   const theme = useTheme();
@@ -83,11 +83,43 @@ const PokemonDetail = () => {
     return (
       <Box
         display="flex"
-        justifyContent="center"
+        flexDirection="column"
         alignItems="center"
-        sx={{ height: '100vh', backgroundColor: theme.palette.background.default, transition: 'background-color 0.5s ease' }}
+        justifyContent="center"
+        sx={{ minHeight: '100vh', backgroundColor: theme.palette.background.default, padding: 2, transition: 'background-color 0.5s ease' }}
       >
-        <Loading />
+        <Skeleton variant="rectangular" width={250} height={250} sx={{ borderRadius: '15px' }} />
+        <Skeleton variant="text" width="60%" height={40} sx={{ mt: 2 }} />
+        <Skeleton variant="text" width="40%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="50%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="30%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="35%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="45%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="25%" height={30} sx={{ mt: 1 }} />
+        <Skeleton variant="text" width="50%" height={30} sx={{ mt: 1 }} />
+        <Box display="flex" flexDirection="row" gap="10px" mt={1} width="60%">
+          <Skeleton variant="text" height={30} width="30%" />
+          <Skeleton variant="text" height={30} width="30%" />
+        </Box>
+        <Skeleton variant="rectangular" width={150} height={40} sx={{ mt: 3, borderRadius: '8px' }} />
+        <Skeleton variant="rectangular" width="100%" height={300} sx={{ mt: 4 }} />
+        <Skeleton variant="text" width="40%" height={30} sx={{ mt: 4 }} />
+        <Grid container spacing={2} mt={1}>
+          {Array.from(new Array(4)).map((_, index) => (
+            <Grid item xs={12} sm={6} key={index}>
+              <Skeleton variant="rectangular" height={40} sx={{ borderRadius: '8px' }} />
+            </Grid>
+          ))}
+        </Grid>
+        <Skeleton variant="text" width="40%" height={30} sx={{ mt: 4 }} />
+        <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" gap="20px" mt={2} p={2}>
+          {Array.from(new Array(3)).map((_, index) => (
+            <React.Fragment key={index}>
+              <Skeleton variant="circular" width={80} height={80} />
+              {index < 2 && <ArrowForwardIcon fontSize="large" />}
+            </React.Fragment>
+          ))}
+        </Box>
       </Box>
     );
   }
@@ -431,15 +463,7 @@ const PokemonDetail = () => {
                       </Typography>
                     </Box>
                     {index < evolutionChain.length - 1 && (
-                      <Typography
-                        sx={{
-                          fontSize: '30px',
-                          color: theme.palette.text.secondary,
-                          transition: 'color 0.5s ease',
-                        }}
-                      >
-                        ➞
-                      </Typography>
+                      <ArrowForwardIcon fontSize="large" sx={{ color: theme.palette.text.secondary }} />
                     )}
                   </React.Fragment>
                 );

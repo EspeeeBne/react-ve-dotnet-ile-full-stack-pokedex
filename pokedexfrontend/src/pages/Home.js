@@ -14,6 +14,7 @@ import {
   InputLabel,
   Snackbar,
   Alert,
+  Skeleton,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -148,15 +149,15 @@ const Home = () => {
   }, []);
 
   const generationMapping = {
-    i: "generation-i",
-    ii: "generation-ii",
-    iii: "generation-iii",
-    iv: "generation-iv",
-    v: "generation-v",
-    vi: "generation-vi",
-    vii: "generation-vii",
-    viii: "generation-viii",
-    ix: "generation-ix",
+    i: 'generation-i',
+    ii: 'generation-ii',
+    iii: 'generation-iii',
+    iv: 'generation-iv',
+    v: 'generation-v',
+    vi: 'generation-vi',
+    vii: 'generation-vii',
+    viii: 'generation-viii',
+    ix: 'generation-ix',
   };
 
   const handleRegionChange = (event) => {
@@ -223,10 +224,7 @@ const Home = () => {
         paddingBottom: '20px',
       }}
     >
-      <Box
-        sx={{
-        }}
-      >
+      <Box>
         <Box
           display="flex"
           flexDirection={{ xs: 'column', sm: 'row' }}
@@ -625,9 +623,17 @@ const Home = () => {
         next={fetchPokemonList}
         hasMore={hasMore}
         loader={
-          <Suspense fallback={<Box display="flex" justifyContent="center" mt={2}><Loading /></Box>}>
-            <Loading />
-          </Suspense>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
+              {Array.from(new Array(20)).map((_, index) => (
+                <Box key={index} width={200}>
+                  <Skeleton variant="rectangular" height={300} />
+                  <Skeleton height={40} sx={{ mt: 1 }} />
+                  <Skeleton height={30} width="60%" />
+                </Box>
+              ))}
+            </Box>
+          </Box>
         }
         endMessage={
           <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '0.9rem' }}>
@@ -645,16 +651,23 @@ const Home = () => {
             transition: 'background-color 0.5s ease, color 0.5s ease',
           }}
         >
-          {loading && (
-            <Typography variant="body1" sx={{ fontSize: '0.9rem' }}>
-              {t('loading')}
-            </Typography>
+          {loading ? (
+            <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
+              {Array.from(new Array(20)).map((_, index) => (
+                <Box key={index} width={200}>
+                  <Skeleton variant="rectangular" height={300} />
+                  <Skeleton height={40} sx={{ mt: 1 }} />
+                  <Skeleton height={30} width="60%" />
+                </Box>
+              ))}
+            </Box>
+          ) : (
+            <Suspense fallback={<Box display="flex" justifyContent="center" mt={2}><Loading /></Box>}>
+              {pokemonList.map((pokemon) => (
+                <PokemonCard key={`${pokemon.id}-${pokemon.name}`} pokemon={pokemon} />
+              ))}
+            </Suspense>
           )}
-          <Suspense fallback={<Box display="flex" justifyContent="center" mt={2}><Loading /></Box>}>
-            {pokemonList.map((pokemon) => (
-              <PokemonCard key={`${pokemon.id}-${pokemon.name}`} pokemon={pokemon} />
-            ))}
-          </Suspense>
         </Box>
       </InfiniteScroll>
     </Box>

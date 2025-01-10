@@ -454,7 +454,26 @@
         "MalePercentage": 87.5,
         "FemalePercentage": 12.5
       },
-      "EvolutionSteps": null
+      "EvolutionSteps": [
+        {
+          "Id": 7,
+          "Name": "squirtle",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+          "LastUpdated": "2025-01-10T14:24:47.8595867Z"
+        },
+        {
+          "Id": 8,
+          "Name": "wartortle",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
+          "LastUpdated": "2025-01-10T14:24:48.205651Z"
+        },
+        {
+          "Id": 9,
+          "Name": "blastoise",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
+          "LastUpdated": "2025-01-10T14:24:48.7946271Z"
+        }
+      ]
     },
     {
       "Id": 8,
