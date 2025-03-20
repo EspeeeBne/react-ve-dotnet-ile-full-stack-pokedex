@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: CI/CD Workflow for espe pokedex
 
 on:
   push:
@@ -15,12 +15,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@latest
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@latest
       with:
-        node-version: '18'
+        node-version: '20.19.0'
 
     - name: Install dependencies
       run: npm install --legacy-peer-deps
@@ -36,10 +36,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@latest
 
     - name: Set up .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@latest
       with:
         dotnet-version: '9.0'
 
