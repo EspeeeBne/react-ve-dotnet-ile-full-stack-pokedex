@@ -24,6 +24,7 @@
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 - **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
 - **Contexts**: Sitenin back-end tarafı kapalıysa otomatikmen site kapalı yazısı getiren bir özellik.
+- **Custom-Scrollbar**: Evet custom bir scrollbar var ve body içinde kilitli daha havalı bu sayede.
 
 ---
 
@@ -41,6 +42,7 @@
 - **dotenv**: Api portu farklı olursa kullanıcı mağdur olmasın.
 - **lodash**: JavaScript dizileri, nesneleri ve stringleri daha kolay ve performanslı bir şekilde işlemek için kullanılan popüler bir yardımcı kütüphane. Karmaşık işlemleri basit hale getirir ve kodun okunabilirliğini artırır. Özellikle derin kopyalama, veri karşılaştırma ve veri manipülasyonu gibi işlemler için tercih edilir.
 - **i18next-browser-languagedetector**: Kullanıcının tarayıcı diline göre otomatik dil tespiti yapmaya yarayan bir i18next eklentisi. Uygulamanın, kullanıcının varsayılan tarayıcı diline uygun lokalizasyon dosyasını yüklemesini sağlar. URL parametreleri, tarayıcı ayarları veya `localStorage` gibi çeşitli kaynaklardan dil tespit edebilir.
+- **saass**: Scss için gerekti ondan özel bir şeyi yok.
 
 
 ### Back-end:
@@ -181,6 +183,7 @@ Açıklama: Back-end kapalıysa front-end sitemiz kapalı desin diye koyulmuş b
 - **Bütün Pokemonları görebilme**: Ana sayfadan bütün var olan pokemon'ları görebilme.
 - **Bilgisayarınız diline göre otomatik dili seçme**: Bilgisayarın varsayılan dili örnek: **İngilizce** ise otomatik **İngilizce** **Türkçe** ise otomatik **Türkçe** yapan bir özellik.
 - **Contexts**: Sitenin back-end tarafı kapalıysa otomatikmen site kapalı yazısı getiren bir özellik.
+- **Custom-Scrollbar**: Evet custom bir scrollbar var ve body içinde kilitli daha havalı bu sayede.
 
 
 ---
