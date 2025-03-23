@@ -30,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
+import { useThemePoke } from "../themes/themeProvider";
 
 const API_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -58,7 +59,8 @@ const searchContainerVariants = {
   expanded: { width: '300px' },
 };
 
-export default function Navbar({ toggleTheme, darkMode }) {
+export default function Navbar() {
+  const { toggleTheme, darkMode } = useThemePoke();
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);

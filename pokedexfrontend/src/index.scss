@@ -1,0 +1,15 @@
+html {
+    position: static;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    position: fixed;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

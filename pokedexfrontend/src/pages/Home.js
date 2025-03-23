@@ -619,58 +619,91 @@ const Home = () => {
       </Snackbar>
 
       <InfiniteScroll
-        dataLength={pokemonList.length}
-        next={fetchPokemonList}
-        hasMore={hasMore}
-        loader={
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
-              {Array.from(new Array(20)).map((_, index) => (
-                <Box key={index} width={200}>
-                  <Skeleton variant="rectangular" height={300} />
-                  <Skeleton height={40} sx={{ mt: 1 }} />
-                  <Skeleton height={30} width="60%" />
-                </Box>
-              ))}
-            </Box>
+  dataLength={pokemonList.length}
+  next={fetchPokemonList}
+  hasMore={hasMore}
+  loader={
+    <Box display="flex" justifyContent="center" mt={2}>
+      <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
+        {Array.from(new Array(20)).map((_, index) => (
+          <Box
+            key={index}
+            sx={{
+              width: 200,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: '8px',
+              p: 2,
+              boxShadow: theme.shadows[2],
+            }}
+          >
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={100}
+              sx={{ borderRadius: '8px' }}
+            />
+            <Skeleton variant="text" sx={{ mt: 1, mb: 0.5 }} />
+            <Skeleton variant="text" width="80%" sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="60%" sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="50%" />
           </Box>
-        }
-        endMessage={
-          <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '0.9rem' }}>
-            <b>{t('allPokemonLoaded')}</b>
-          </Typography>
-        }
-      >
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-          gap="20px"
-          sx={{
-            padding: '20px',
-            transition: 'background-color 0.5s ease, color 0.5s ease',
-          }}
-        >
-          {loading ? (
-            <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
-              {Array.from(new Array(20)).map((_, index) => (
-                <Box key={index} width={200}>
-                  <Skeleton variant="rectangular" height={300} />
-                  <Skeleton height={40} sx={{ mt: 1 }} />
-                  <Skeleton height={30} width="60%" />
-                </Box>
-              ))}
-            </Box>
-          ) : (
-            <Suspense fallback={<Box display="flex" justifyContent="center" mt={2}><Loading /></Box>}>
-              {pokemonList.map((pokemon) => (
-                <PokemonCard key={`${pokemon.id}-${pokemon.name}`} pokemon={pokemon} />
-              ))}
-            </Suspense>
-          )}
-        </Box>
-      </InfiniteScroll>
+        ))}
+      </Box>
     </Box>
+  }
+  endMessage={
+    <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '0.9rem' }}>
+      <b>{t('allPokemonLoaded')}</b>
+    </Typography>
+  }
+  scrollableTarget="scroll-node"
+>
+  <Box
+    display="flex"
+    flexWrap="wrap"
+    justifyContent="center"
+    gap="20px"
+    sx={{
+      padding: '20px',
+      transition: 'background-color 0.5s ease, color 0.5s ease',
+    }}
+  >
+    {loading ? (
+      <Box display="flex" flexWrap="wrap" justifyContent="center" gap="20px">
+        {Array.from(new Array(20)).map((_, index) => (
+          <Box
+            key={index}
+            sx={{
+              width: 200,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: '8px',
+              p: 2,
+              boxShadow: theme.shadows[2],
+            }}
+          >
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={100}
+              sx={{ borderRadius: '8px' }}
+            />
+            <Skeleton variant="text" sx={{ mt: 1, mb: 0.5 }} />
+            <Skeleton variant="text" width="80%" sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="60%" sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="50%" />
+          </Box>
+        ))}
+      </Box>
+    ) : (
+      <Suspense fallback={<Box display="flex" justifyContent="center" mt={2}><Loading /></Box>}>
+        {pokemonList.map((pokemon) => (
+          <PokemonCard key={`${pokemon.id}-${pokemon.name}`} pokemon={pokemon} />
+        ))}
+      </Suspense>
+    )}
+  </Box>
+</InfiniteScroll>
+  </Box>
   );
 };
 

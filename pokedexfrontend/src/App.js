@@ -1,18 +1,11 @@
-import React, { useState, Suspense, lazy, useContext } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import React, { Suspense, lazy, useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import darkTheme from './themes/darkTheme';
-import lightTheme from './themes/lightTheme';
-
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Loading from './components/Loading';
+import Wrapper from './components/wrapper';
 import InitialLoading from './components/InitialLoading';
 
 import SiteStatusContext from './contexts/SiteStatusContext';
-
 import './i18n';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -22,64 +15,45 @@ const ComparePokemon = lazy(() => import('./pages/ComparePokemon'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
-  const [darkMode, setDarkMode] = useState(true);
-  const toggleTheme = () => setDarkMode(!darkMode);
-
   const [siteStatus] = useContext(SiteStatusContext);
 
   if (siteStatus.loading) {
-    return (
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <CssBaseline />
-        <InitialLoading error={false} />
-      </ThemeProvider>
-    );
+    return <InitialLoading error={false} />;
   }
 
   if (!siteStatus.status) {
-    return (
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <CssBaseline />
-        <InitialLoading error={true} />
-      </ThemeProvider>
-    );
+    return <InitialLoading error={true} />;
   }
 
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Navbar
-          toggleTheme={toggleTheme}
-          darkMode={darkMode}
-        />
-        <Suspense fallback={<Loading size={60} disableShrink={true} />}>
-          <Routes>
+    <BrowserRouter>
+      <Suspense fallback={<Loading size={60} disableShrink={true} />}>
+        <Routes>
+          <Route element={<Wrapper />}>
             <Route
-              path="/"
-              element={<Home />}
+                path="/"
+                element={<Home />}
             />
             <Route
-              path="/pokemon/:id"
-              element={<PokemonDetail />}
+                path="/pokemon/:id"
+                element={<PokemonDetail />}
             />
             <Route
-              path="/ability/:id"
-              element={<AbilityDetail />}
+                path="/ability/:id"
+                element={<AbilityDetail />}
             />
             <Route
-              path="/compare/:id1/:id2"
-              element={<ComparePokemon />}
+                path="/compare/:id1/:id2"
+                element={<ComparePokemon />}
             />
             <Route
-              path="*"
-              element={<NotFound />}
+                path="*"
+                element={<NotFound />}
             />
-          </Routes>
-        </Suspense>
-        <Footer />
-      </BrowserRouter>
-    </ThemeProvider>
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
