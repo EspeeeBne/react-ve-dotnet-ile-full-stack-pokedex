@@ -51,7 +51,7 @@ var urls = app.Urls.Count == 0
 
 Console.WriteLine($"ℹ️Bu üstteki uyarılara aldırış etme null dönebilir uyarısı gereksiz yaniℹ️");
 Console.WriteLine($"🎉 Back-end şu yerde açıldı: {urls}");
-Console.WriteLine($"ℹ️  Version: 3.7.0");
+Console.WriteLine($"ℹ️  Version: 3.8.0");
 Console.WriteLine($"ℹ️  License: MIT");
 Console.WriteLine($"ℹ️  Author: EspeeeBne");
 Console.WriteLine($"ℹ️  Author Mail: espeebne@proton.me");

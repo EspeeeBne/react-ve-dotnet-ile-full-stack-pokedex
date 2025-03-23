@@ -1008,7 +1008,26 @@
         "MalePercentage": 50.0,
         "FemalePercentage": 50.0
       },
-      "EvolutionSteps": null
+      "EvolutionSteps": [
+        {
+          "Id": 16,
+          "Name": "pidgey",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png",
+          "LastUpdated": "2025-03-23T21:32:02.3362865Z"
+        },
+        {
+          "Id": 17,
+          "Name": "pidgeotto",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png",
+          "LastUpdated": "2025-03-23T21:32:02.4458334Z"
+        },
+        {
+          "Id": 18,
+          "Name": "pidgeot",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png",
+          "LastUpdated": "2025-03-23T21:32:02.5641761Z"
+        }
+      ]
     },
     {
       "Id": 18,
@@ -54527,7 +54546,14 @@
         "MalePercentage": 50.0,
         "FemalePercentage": 50.0
       },
-      "EvolutionSteps": null
+      "EvolutionSteps": [
+        {
+          "Id": 973,
+          "Name": "flamigo",
+          "ImageUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/973.png",
+          "LastUpdated": "2025-03-23T21:32:11.8757985Z"
+        }
+      ]
     },
     {
       "Id": 974,
