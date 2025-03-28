@@ -24,7 +24,7 @@ namespace PokedexBackend.Controllers
                 author = "EspeeeBne",
                 contact = "espeebne@proton.me",
                 github = "https://github.com/EspeeeBne",
-                version = "3.8.0",
+                version = "4.0.0",
                 status = isPokeApiAvailable ? "OK" : "DOWN"
             };
 

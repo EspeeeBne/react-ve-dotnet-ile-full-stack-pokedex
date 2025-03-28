@@ -1,0 +1,19 @@
+html {
+    position: static;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    position: fixed;
+    overscroll-behavior-y: none;
+    -ms-scroll-chaining: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
